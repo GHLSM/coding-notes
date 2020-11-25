@@ -1,3 +1,7 @@
+
+
+
+
 # 初步学习(后面只列出HomeContent内部代码)
 
 ```dart
@@ -102,7 +106,7 @@ class HoemContent extends StatelessWidget {
 }
 ```
 
-# 图片组件
+# 图片组件(Image,ClipOval)
 
 ```dart
 class HoemContent extends StatelessWidget {
@@ -114,7 +118,7 @@ class HoemContent extends StatelessWidget {
       width: 300.0,
       height: 300.0,
 
-      // //实现圆角图片方式二
+      // //实现圆型图片方式二
       // child: ClipOval(
       //   child: Image.network(
       //     "iamge_url",
@@ -152,7 +156,9 @@ class HoemContent extends StatelessWidget {
 }
 ```
 
-# 列表组件
+# 列表组件（ListView、ListTile）
+
+**ListView组件无法嵌套ListView组件**
 
 ## 结合ListTile组件（图标组件Icon）
 
@@ -541,5 +547,322 @@ class LayOutDemo extends StatelessWidget {
   }
 }
 
+```
+
+## Stack-Align
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125132641023.png" alt="image-20201125132641023" style="zoom:50%;" />
+
+```dart
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        height: 500,
+        width: 300,
+        color: Colors.yellow,
+        child: Stack(
+          children: [
+            //使用Align控制每一个组件的位置
+            Align(
+              alignment: Alignment(1, 0.2),
+              child: Icon(
+                Icons.search,
+                size: 50,
+                color: Colors.green,
+              ),
+            ),
+            Align(
+              alignment: Alignment(0, 0),
+              child: Icon(
+                Icons.home,
+                size: 50,
+                color: Colors.green,
+              ),
+            ),
+            Align(
+              alignment: Alignment(-0.5, -0.5),
+              child: Icon(
+                Icons.send,
+                size: 50,
+                color: Colors.green,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## stack-Position
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125133125767.png" alt="image-20201125133125767" style="zoom:50%;" />
+
+```dart
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        height: 500,
+        width: 300,
+        color: Colors.yellow,
+        child: Stack(
+          children: [
+            //使用Align控制每一个组件的位置
+            Positioned(
+              //控制离容器边的距离
+              left: 20,
+              top: 100,
+              //right bottom
+              child: Icon(
+                Icons.search,
+                size: 50,
+                color: Colors.green,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+# AspectRatio组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125134027692.png" alt="image-20201125134027692" style="zoom:50%;" />
+
+
+
+```dart
+//效果图中的浅绿色宽高比是：aspectRatio: 3.0 / 1.0
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //AxpectRatio常用于图片等组件的平铺
+    return AspectRatio(
+      //横向/纵向,AspectRatio是针对于父组件而言的（最大的父组件是屏幕）
+      aspectRatio: 3.0 / 1.0,
+      //用子组件占满，添加颜色，更好看效果
+      child: Container(
+        color: Colors.green[50],
+      ),
+    );
+  }
+}
+
+```
+
+# Card组件
+
+## 初步使用(Card+ListTile)
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125135802415.png" alt="image-20201125135802415" style="zoom:80%;" />
+
+```dart
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Card(
+          margin: EdgeInsets.all(15),
+          color: Colors.green[50],
+          //阴影颜色
+          shadowColor: Colors.orange,
+          //阴影偏移
+          elevation: 5,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  "耿號",
+                  style: TextStyle(fontSize: 30),
+                ),
+                subtitle: Text("高级工程师"),
+              ),
+              ListTile(
+                title: Text("phone:"),
+              ),
+              ListTile(title: Text("addr:"))
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+```
+
+## 实现效果（Card+AspectRatio+ClipOval+ListTile）
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125141431021.png" alt="image-20201125141431021" style="zoom:80%;" />
+
+```dart
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Card(
+          margin: EdgeInsets.all(15),
+          color: Colors.green[50],
+          //阴影颜色
+          shadowColor: Colors.orange,
+          //阴影偏移
+          elevation: 5,
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(
+                  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606294429104&di=97a8e004f1757a277d9333fdcb820018&imgtype=0&src=http%3A%2F%2Fdik.img.kttpdq.com%2Fpic%2F73%2F50657%2Fb768771c63e69a84.jpg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              ListTile(
+                  leading: ClipOval(
+                    child: Image.network(
+                      "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606294429104&di=97a8e004f1757a277d9333fdcb820018&imgtype=0&src=http%3A%2F%2Fdik.img.kttpdq.com%2Fpic%2F73%2F50657%2Fb768771c63e69a84.jpg",
+                      fit: BoxFit.cover,
+                      height: 50,
+                      width: 50,
+                    ),
+                  ),
+                  title: Text("耿號"))
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+```
+
+## 使用map循环产生多个Card
+
+```dart
+List listData = [
+  {"iamge_url": "", "avatar_url": "", "title": "", "descripton": ""},
+  {"iamge_url": "", "avatar_url": "", "title": "", "descripton": ""}
+];
+
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: listData.map((value) {
+        return Card(
+          margin: EdgeInsets.all(15),
+          color: Colors.green[50],
+          shadowColor: Colors.orange,
+          elevation: 5,
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(
+                  value["iamge_url"],
+                  fit: BoxFit.cover,
+                ),
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(value["avatar_url"]),
+                ),
+                title: Text(value["title"]),
+                subtitle: Text(value["descripton"]),
+              )
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+```
+
+
+
+
+
+# 圆形头像组件(CircleAvatar)
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125142200029.png" alt="image-20201125142200029" style="zoom:67%;" />
+
+```dart
+ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606294429104&di=97a8e004f1757a277d9333fdcb820018&imgtype=0&src=http%3A%2F%2Fdik.img.kttpdq.com%2Fpic%2F73%2F50657%2Fb768771c63e69a84.jpg"),
+                  ),
+                  title: Text("耿號"))
+```
+
+# 数据流布局(Wrap)
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125150159339.png" alt="image-20201125150159339" style="zoom:80%;" />
+
+```dart
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      //设置主轴方向，默认为水平
+      direction: Axis.horizontal,
+      //主轴对齐方式,指的是不同长度的内容对其的方式
+      // alignment: WrapAlignment.end,
+      //主轴方向间距
+      spacing: 10,
+      //次轴间距
+      runSpacing: 20,
+      //次轴对齐方式
+      // runAlignment: ,
+      crossAxisAlignment: WrapCrossAlignment.center,
+
+      children: [
+        UseButton("04531"),
+        UseButton("054641"),
+        UseButton("051"),
+        UseButton("01"),
+        UseButton("01457878"),
+        UseButton("01"),
+        UseButton("015434532248"),
+      ],
+    );
+  }
+}
+```
+
+# Button组件
+
+## 初步学习
+
+```dart
+class UseButton extends StatelessWidget {
+  String name;
+  UseButton(this.name);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Text(this.name),
+      textColor: Theme.of(context).accentColor,
+      onPressed: () {},
+    );
+  }
+}
+
+class LayOutDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return UseButton("01");
+  }
+}
 ```
 
