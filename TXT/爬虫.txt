@@ -1,0 +1,162 @@
+'''1.基本操作
+	登陆任意网站（伪造浏览器的任何行为）
+	
+	性能相关
+		异步IO：gevemt/Twisted/asyniio/aiohttp
+		自定义异步IO模块
+		IO多路复用：select
+		
+爬虫基本操作
+	爬虫
+		定向
+		非定向'''
+		
+1.requests模块
+    '''初步使用'''
+        #对URL发送 get请求，得到response
+            response = requests .get('URL')
+        #寻找到的response中内容转为文本数据格式
+            response.text
+        #寻找到的response中的数据内容
+            response.content
+        #寻找到数据之后我们想要的编码格式
+            response.encoding
+        #寻找到的源数据的编码格式
+            response.aparemt_encoding
+        #状态码
+            response.status_code
+        # 获取cookie
+            response.cookies    # 获取对象形式的cookie
+            response.cookies.get_dict()     # 获取对象形式的cookie修改为字典样式
+    
+    '''看源码的一些推导'''
+            requests.get()
+            requests.post()
+            requests.put()
+            ......
+            # 以上的方法都是调用的request方法
+            
+            # 代表着仅用一个request方法就可以实现上述方法，和$.Ajax()类似
+                # 一些配置参数
+                    method = ``GET``,   #请求方式
+                        # 还有：``OPTIONS``, ``HEAD``, ``POST``, ``PUT``, ``PATCH``, ``DELETE`
+                        
+                    url = 'https://...'
+                    params = ...    # Dictionary, list of tuples or bytes to send
+                    data = ...  # Dictionary, list of tuples, bytes, or file-like
+                    json = ...  # A JSON serializable Python object to send in the body of the
+                    headers = ...   # Dictionary of HTTP Headers to send
+                    cookies = ...   # Dict or CookieJar object to send
+                    
+                    
+                    
+            requests.request(
+                method = 'GET',
+                url = 'https://...'
+                params = {
+                    'k1': 'v1',
+                }
+            )
+            
+            requests.request(
+                method = 'POST',
+                url = 'https://...',
+                params = {
+                    'k1': 'v1',
+                },
+                # data = "user = alex&pwd = 123"  和下面的相同，其实在请求体内部转为这种格式
+                data = {
+                'user':'alex',
+                'pwd':'123'
+                }
+            )
+                '''请求头:
+                    content-type: application/url-fromdata
+                    
+                  请求体:
+                     user = alex&pwd = 123
+                '''
+                
+            requests.request(
+                method = 'POST',
+                url = 'https://...',
+                params = {
+                    'k1': 'v1',
+                },
+                json = {
+                'user':'alex',
+                'pwd':'123'
+                }
+            )
+                '''请求头:
+                    content-type: application/json
+                    
+                  请求体:
+                     "{'user':'alex', 'pwd':'123'}"
+                '''
+                # 字典中套字典的时候使用json
+        
+            requests.request(
+                method = 'POST',
+                url = 'https://...',
+                params = {
+                    'k1': 'v1',
+                },
+                json = {
+                'user':'alex',
+                'pwd':'123'
+                },
+                headers = {
+                    'Referer': 'https://...',       # 浏览器所记录的上一次所访问的地址
+                    'User-Agent':"...",           # 发送的客户端
+                },
+            )
+             
+        
+        
+        
+        
+        
+        
+        
+        
+2.beautifulsoup模块
+        soup = BeautifulSoup('html内容（变成str）', features='html.parser')
+        
+        # 找soup里面第一个， 返回结果为一个对象
+        soup.find('div')
+        soup.find(id='id值')
+        soup.find('div',id='id值')
+        
+        # 找soup内部所有,参数和使用和find相同，返回对象是一个列表中有对象
+        soup.find_all('div')
+        
+        ***************************
+        obj = soup.find()
+        # 得到其内的文本数据
+        text = obj.text
+        # 得到标签内的属性数据
+        attrs = obj.attrs
+        ***************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

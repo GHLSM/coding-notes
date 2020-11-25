@@ -1,0 +1,26 @@
+ void main(){
+	print("hello world!")
+ }
+ 
+ // 强类型语言
+ var str = "sadasd"
+ str = 123(报错)
+ 
+ String str = 123	(报错)
+ 
+ // 常量定义，且不可修改,修改即报错
+ const PI = 3.1415926 
+ final PI = 3.1415926
+ 
+ // final 开始可以不被赋值，但是只能被赋值一次
+ // final不仅有const的编译时常量的特性，最重要的是他是运行时常量
+ // 即在运行时第一次使用前才初始化
+ final a = new DateTime.now(); (可行)
+ const a = new DateTime.now(); (报错)
+ 
+ Dart中的数据类型：
+	 Number：int double
+	 String
+	 Booleans
+	 List
+	 Maps

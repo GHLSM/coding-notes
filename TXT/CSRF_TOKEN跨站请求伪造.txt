@@ -1,0 +1,83 @@
+'''CSRF_TOKEN跨站请求伪造'''
+
+# 在form表单中应用：
+    <form action="" method="post">
+        '''{% csrf_token %}'''
+        <p>用户名：<input type="text" name="name"></p>
+        <p>密码：<input type="text" name="password"></p>
+        <p><input type="submit"></p>
+    </form>
+
+# 在Ajax中应用：
+    # 放在data里：
+    <!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<script src="/static/jquery-3.3.1.js"></script>
+			<title>Title</title>
+		</head>
+		<body>
+		<form action="" method="post">
+			'''{% csrf_token %}'''
+			<p>用户名：<input type="text" name="name"></p>
+			<p>密码：<input type="text" name="password" id="pwd"></p>
+			<p><input type="submit"></p>
+		</form>
+		<button class="btn">点我</button>
+		</body>
+		<script>
+			$(".btn").click(function () {
+				$.ajax({
+					url: '',
+					type: 'post',
+					data: {
+						'name': $('[name="name"]').val(),
+						'password': $("#pwd").val(),
+						''''csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()'''
+					},
+					success: function (data) {
+						console.log(data)
+					}
+
+				})
+			})
+		</script>
+		</html>
+
+    # 放在cookie里：
+        # 获取cookie：document.cookie
+            # 是一个字符串，可以自己用js切割，也可以用jquery的插件
+                # 获取:
+                cookie：$.cookie('csrftoken')
+                # 设置:
+                cookie：$.cookie('key','value')
+
+    # 放在cookie里
+        # 其它操作
+            # 全站禁用：注释掉中间件 'django.middleware.csrf.CsrfViewMiddleware'
+            # 局部禁用：用装饰器
+                # 在FBV中使用
+                    from django.views.decorators.csrf import csrf_exempt,csrf_protect
+                    # 不再检测，局部禁用（前提是全站使用）
+                    # @csrf_exempt
+                    # 检测，局部使用（前提是全站禁用）
+                    # @csrf_protect
+                    def csrf_token(request):
+                        if request.method=='POST':
+                            print(request.POST)
+
+                            return HttpResponse('ok')
+                        return render(request,'csrf_token.html')
+
+                # CBV中使用
+                from django.views import View
+                from django.views.decorators.csrf import csrf_exempt,csrf_protect
+                from django.utils.decorators import method_decorator
+                # CBV的csrf装饰器，只能加载类上（指定方法为dispatch）和dispatch方法上（django的bug）
+                # 给get方法使用csrf_token检测
+                @method_decorator(csrf_exempt,name='dispatch')class Foo(View):
+                    def get(self,request):
+                        pass
+                    def post(self,request):
+                        pass

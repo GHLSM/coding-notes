@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GHLSM</title>
+</head>
+<body>
+
+标签具有的两个重要属性
+    1.id值:类似于标签的身份证,不重复
+    2.class值:类似于面向对象类的继承,一个标签可以继承多个class
+
+
+<!--块级标签，都独占一行
+    1.块级标签可以修改长度，行内标签不可以，修改了也不会改变
+    2.块级标签可以嵌套任意块级标签和行内标签
+    但是P标签虽然是块级标签，但是他只能嵌套行内标签
+    3.行内标签可以嵌套行内标签，但是一般不用-->
+    <h1>hello</h1>
+    <h2>hello</h2>
+    <h3>hello</h3>
+    <h4>hello</h4>
+    <h5>hello</h5>
+    <h6>hello</h6>
+
+    <p>段落标签，一个P占一行</p>
+    <br>换行
+    <p>段落标签，一个P占一行</p>
+    <hr>水平分割线
+    <p>段落标签，一个P占一行</p>
+    <p>段落标签，一个P占一行</p>
+
+
+行内标签，自身文本多大就占多大
+    <b>加粗标签</b>
+    <i>斜体标签</i>
+    <u>下划线</u>
+    <s>删除线</s>
+
+特殊符号
+    &nbsp;  空格符
+    &gt;    >
+    &lt;    <
+    &amp;   &
+    &yen;   ￥
+    &copy;  版权符
+    &reg;   商标符
+
+常用标签
+    <div>空标签，没有任何效果
+        为了后期添加可能
+        也可以用于占位区域，意味着用div规定好所有区域
+        之后向该区域内部填写内容即可
+        块级标签
+    </div>
+    <span>空标签，和div效果类似，但是是行内标签</span>
+
+
+图片标签
+    <img src="1.图片路径，可以是本地也可以是网上的2.可以向url发送get请求"
+         alt="图片加载不出，会出来alt的内容"
+         title="鼠标悬浮在图片后自动显示的信息"
+         height="图片高度"
+         width="图片宽度">
+
+连接标签
+    <a href="url,用户点击跳转，其他标签的id值，点击即可跳转到标签位置"
+       target="_blank去另一个页面跳转_self在当前页面跳转,默认">点击的文本(插入图片点击图片跳转)</a>
+        a标签的锚点功能,点击跳转位置
+
+列表标签，无序，有序，标题列表
+无序列表
+    <ul>
+        <li>第一项</li>
+        <li>第二项</li>
+        <li>第三项</li>
+    </ul>
+    排版一致的几行数据基本上都是il标签
+
+有序标签
+    <ol type="i" start="">
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+    </ol>
+
+标题列表
+    <dl>
+        <dt>标题一</dt>
+        <dd>内容一</dd>
+        <dt>标题二</dt>
+        <dd>内容二</dd>
+    </dl>
+
+表格标签（只是展示数据，一般可以用）
+    <table>
+        <thead>     表头信息
+            <tr>    一个tr就一行
+                <th>username</th>   加粗文本
+                <th>pwd</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>gh</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td>lsm</td>
+                <td>456</td>
+            </tr>
+        </tbody>
+    </table>
+        table内  border  边距
+        td内     rowspan 垂直方向占多行
+                  colspan 水平方向占多行
+
+
+
+表单标签（非常重要）
+    获取用户前端数据，基于网络发给后端服务器
+    <form action="" method="post" enctype="multipart/form-data">    通过mythod指定提交方式
+                                                                        enctype默认只能输入文本格式，修改变为文件存储器
+
+        <p>
+            <label for="d1">
+            username:<input type="text" id="d1" name="username" value="请输入用户名">
+            </label>
+        </p>
+        <p>
+            <label for="d2"></label>
+            password:<input type="password" id="d2" name="password">
+        </p>
+        <p>
+            生日: <input type="date" name="bir">
+        </p>
+        <p>gender:
+            <input type="radio" name="gender" value="male" checked>男
+            <input type="radio" name="gender" value="female">女
+            <input type="radio" name="gender" value="others">其他
+        </p>
+        <p>
+            hobby:
+            <input type="checkbox" name="hobby" value="read" checked>read
+            <input type="checkbox" name="hobby" value="DJB">DJB
+            <input type="checkbox" name="hobby" value="hecha">hecha
+        </p>
+        <p>
+            province：
+            <select name="province" id="">
+                <option value="上海" selected>上海</option>
+                <option value="北京">北京</option>
+                <option value="深圳">深圳</option>
+            </select>
+        </p>
+        <p>前女友：
+            <select name="my_ex" id="" multiple>
+                <option value="斯嘉丽" selected>斯嘉丽</option>
+                <option value="新垣结衣">新垣结衣</option>
+                <option value="嘿嘿嘿">嘿嘿嘿</option>
+            </select>
+        </p>
+    <!--    <p>province_new:-->
+    <!--        <select name="" id="">-->
+    <!--            <optgroup label="上海">-->
+    <!--                <option value="">浦东</option>-->
+    <!--                <option value="">黄埔</option>-->
+    <!--                <option value="">青浦</option>-->
+    <!--            </optgroup>-->
+    <!--            <optgroup label="北京">-->
+    <!--                <option value="">朝阳</option>-->
+    <!--            </optgroup>-->
+    <!--        </select>-->
+    <!--    </p>-->
+        <p>文件：
+            <input type="file" name="myfile" multiple>
+        </p>
+        <p>个人简介：
+            <textarea name="my_info" id="" cols="30" rows="10" maxlength="50"></textarea>
+        </p>
+        <input type="submit" value="注册">
+        <input type="button" value="按钮">
+        <input type="reset" value="重置">
+        <button>点我</button>
+    </form>
+        action 用来控制数据提交的后端路径(给哪个服务端提交)
+            1.什么都不写，默认朝当前页面所在的url提交数据
+            2.写全路径，朝指定url提交
+            3.只写路径后缀，自动识别服务端当前IP和PORT拼接到前面
+        label
+            1.直接将input框写在label
+            2.通过id相连
+            2.input，label都是行内标签
+        input
+            1.获取输入内容，需要配合label使用
+
+        可以使用P标签使输入框分行显示
+    input标签
+        当没有对几个按钮用value分开的时候，每个浏览器是不同的
+        text        普通文本
+        password    密文
+        date        日期
+        submit      用来出发from表单提交数据的动作
+        reset       重置内容
+        button      空白按钮可以被自定义
+        radio       单选框，默认选中加checked="checked"
+                                        标签名字和内容一样简写为checked
+        checkbox    多选，也可以使用checked默认选中
+        file        获取文件,一次性多个加multiple
+        hidden      用户看不到的框
+
+    textarea标签
+        用来获取大段文本
+
+    select标签
+        默认单选，可以加multiple参数加多选，默认选中加selected
+
+
+    能够触发from表单提交的动作
+        button标签
+        submit按钮
+
+    所有能够获取用户属性输入的标签，都应该有name属性
+        name就类似于字典的key
+        用户数据相当于字典的value
+
+    from表单默认提交的数据方式是GET请求，数据直接放在url后边
+    提交需要将提交数据方式改为POST
+    针对用户选择的标签，用户不需要输入内容，但是提前需要添加
+
+</body>
+</html>
