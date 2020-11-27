@@ -2,7 +2,7 @@
 
 
 
-# 初步学习(后面只列出HomeContent内部代码)
+# 初步学习(后面只列出非重复代码)
 
 ```dart
 import 'package:flutter/material.dart';
@@ -51,6 +51,67 @@ class HomeContent extends StatelessWidget{
   }
 }
 ```
+
+# Scaffold组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201126092320402.png" alt="image-20201126092320402" style="zoom:50%;" />
+
+```dart
+Scaffold(
+    appBar: AppBar( 
+        title: Text("这是我的"),
+    ),
+    body: LayOutDemo(),
+    bottomNavigationBar: BottomTabs()
+),
+```
+
+## BottomNavigationBar组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201126091816286.png" alt="image-20201126091816286" style="zoom:80%;" />
+
+```dart
+class BottomTabs extends StatefulWidget {
+  BottomTabs({Key key}) : super(key: key);
+
+  @override
+  _BottomTabsState createState() => _BottomTabsState();
+}
+
+class _BottomTabsState extends State<BottomTabs> {
+  int _currentIndex = 1;
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: this._currentIndex,
+      onTap: (int index) {
+        setState(() {
+          this._currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text("search"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text("home"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.ac_unit),
+          title: Text("person"),
+        ),
+      ],
+    );
+  }
+}
+
+```
+
+## body参数
+
+内部放置组件，主要显示内容的界面
 
 # container&Text组件
 
@@ -865,4 +926,297 @@ class LayOutDemo extends StatelessWidget {
   }
 }
 ```
+
+# 有状态组件(StatefulWidget)
+
+想要实现类似于vue中的数据绑定，就需要使用这个组件，自定义组件继承这个组件，内部提供一个setState方法，在监听事件发生时，可以使用此方法改变有状态组件的内部值
+
+```dart
+//初步使用
+class LayOutDemo extends StatefulWidget {
+  LayOutDemo({Key key}) : super(key: key);
+
+  @override
+  _LayOutDemoState createState() => _LayOutDemoState();
+}
+
+class _LayOutDemoState extends State<LayOutDemo> {
+  var str = "data";
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text("hi"),
+          RaisedButton(
+              child: Text("${this.str}"),
+              onPressed: () {
+                setState(() {
+                  // 只有有状态组件内部才有这个方法
+                  this.str = "over";
+                });
+              }),
+          Chip(label: Text("hello"))
+        ],
+      ),
+    );
+  }
+}
+
+```
+
+# 底部导航栏的形成
+
+## 不拆分代码(BottomNavigationBar)
+
+```dart
+class BottomTabs extends StatefulWidget {
+  BottomTabs({Key key}) : super(key: key);
+
+  @override
+  _BottomTabsState createState() => _BottomTabsState();
+}
+
+class _BottomTabsState extends State<BottomTabs> {
+  int _currentIndex = 1;
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: this._currentIndex,
+      onTap: (int index) {
+        setState(() {
+          this._currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text("search"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text("home"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.ac_unit),
+          title: Text("person"),
+        ),
+      ],
+    );
+  }
+}
+
+```
+
+## 代码分离，页面搭建
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_study_two/pages/user.dart';
+import 'home.dart';
+import 'Search.dart';
+
+class BottomTabs extends StatefulWidget {
+  BottomTabs({Key key}) : super(key: key);
+
+  @override
+  _BottomTabsState createState() => _BottomTabsState();
+}
+
+class _BottomTabsState extends State<BottomTabs> {
+  var _pageList = [SearchPage(), HomePage(), PersonPage()];
+  int _currentIndex = 1;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text("这是我的"),
+          ),
+          body: this._pageList[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            iconSize: 24.0, //Icon大小
+            fixedColor: Colors.orange, //选中之后的颜色
+            type: BottomNavigationBarType.fixed,  //可以显示多个导航框
+            currentIndex: this._currentIndex,
+              //实现动态效果
+            onTap: (int index) {
+              setState(() {
+                this._currentIndex = index;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                title: Text("search"),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text("home"),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.ac_unit),
+                title: Text("person"),
+              ),
+            ],
+          )),
+      theme: ThemeData(primarySwatch: Colors.green),
+    );
+  }
+}
+
+```
+
+# 路由跳转
+
+## 匿名路由
+
+```dart
+//路由跳转
+Navigator.push(context,
+               MaterialPageRoute(builder: (context) => SearchPage()));
+```
+
+## 命名路由
+
+```dart
+//入口文件进行路由配置
+import 'package:flutter/material.dart';
+import 'package:flutter_study_two/pages/Tabs/Search.dart';
+
+class UserTwo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BottomTabs(),
+      theme: ThemeData(primarySwatch: Colors.green),
+      //配置路由
+      routes: {"/search": (context) => SearchPage()},
+    );
+  }
+}
+
+
+//在其他地方进行命名路由跳转
+//命名路由跳转
+Navigator.pushNamed(context, "/search");
+
+
+```
+
+## 代码分离
+
+
+
+![image-20201127160038944](C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201127160038944.png)
+
+```dart
+//Routes.dart
+import 'package:flutter_study_two/pages/Tabs/Home.dart';
+import 'package:flutter_study_two/pages/Tabs/Search.dart';
+
+final routes = {
+  "/search": (context, {arguments}) => SearchPage(),
+  "/error": (context) => HomePage()
+};
+
+
+//RoutesHandler.dart
+import 'package:flutter/material.dart';
+import 'Routers.dart';
+
+var onGenerateRoute = (RouteSettings settings) {
+  //settings.name就是点击跳转时，目标组件的跳转命名
+  final String name = settings.name;
+  // print(settings);
+  final Function pageContentBuilder = routes[name];
+
+  if (pageContentBuilder != null) {
+    if (settings.arguments != null) {
+      final Route route = MaterialPageRoute(
+          builder: (context) =>
+              pageContentBuilder(context, arguments: settings.arguments));
+      return route;
+    } else {
+      final Route route =
+          MaterialPageRoute(builder: (context) => pageContentBuilder(context));
+      return route;
+    }
+  }
+  // } else {
+  //   final Route route =
+  //       MaterialPageRoute(builder: (context) => SearchPage());
+  //   return route;
+  // }
+};
+
+```
+
+## 命名路由传参
+
+```dart
+//路由配置
+"/login": (context, {arguments}) => Login(
+    arguments: arguments,
+),
+
+//传递参数模块
+      //传入需要传输的数据内容
+Navigator.pushNamed(context, "/login",
+            		arguments: {"id": 123, "name": "gh"});
+}),
+
+//Login模块配置
+import 'package:flutter/material.dart';
+
+class Login extends StatefulWidget {
+  //使用一个参数，接收内容
+  // var arguments;
+  Map arguments;
+  Login({Key key, this.arguments}) : super(key: key);
+  //在下面的类中使用，需要将数据传入
+  @override
+  _LoginState createState() => _LoginState(arguments: this.arguments);
+}
+
+class _LoginState extends State<Login> {
+  //在这个类中申明接收这个参数
+  Map arguments;
+  _LoginState({this.arguments});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "登陆界面",
+          textAlign: TextAlign.center,
+        ),
+      ),
+      body: Text("this is LoginPage ${this.arguments["name"]}"),
+    );
+  }
+}
+
+```
+
+## 替换路由
+
+杀死前一个发起跳转的路由页面（生命周期?）,直接取而代之
+
+```dart
+//跳转时，使用这个跳转方法
+Navigator.of(context).pushReplacementNamed('routeName')
+```
+
+## 不使用替换路由直接返回某一组件
+
+```dart
+  Navigator.of(context).pushAndRemoveUntil(
+                    //表示直接跳转到一个新的Tab页面，为了保持用户体验，从哪来回哪去，设置传参即可
+                    MaterialPageRoute(builder: (context) => Tabs()),
+                    //这参数的意思是将之前所有的route置空
+                    (route) => route == null);
+```
+
+
 
