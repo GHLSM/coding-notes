@@ -1,3 +1,60 @@
+# 生命周期
+
+在原生 Android 、原生 iOS 、前端 React 或者 Vue 都存在生命周期的概念，在 Flutter 中一样存在生命周期的概念，其基本概念和作用相似。 
+Flutter 中说的生命周期，也是指有状态组件，`对于无状态组件生命周期只有 build 这个过程,也只会渲染一次`
+
+## 生命周期的流转
+
+Flutter 中的生命周期，包含以下几个阶段：
+
+- **createState** ，为 StatefulWidget 中创建 State 的方法，当 StatefulWidget 被调用时会立即执行 createState 。
+- **initState** ，该函数为 State 初始化调用，因此可以在此期间执行 State 各变量的初始赋值，同时也可以在此期间与服务端交互，获取服务端数据后调用 setState 来设置 State。
+   **注意：**这个方法是重写父类的方法，`必须调用super`，因为父类中会进行一些其他操作；
+   并且如果你阅读源码，你会发现这里有一个注解`（annotation）：@mustCallSuper`
+
+
+
+```java
+@protected
+@mustCallSuper
+void initState() {
+    assert(_debugLifecycleState == _StateLifecycle.created);
+}
+```
+
+- **didChangeDependencies** ，该函数是在该组件依赖的 State 发生变化时，这里说的 State 为全局 State ，例如语言或者主题等。这个方法在两种情况下会调用：
+  ·  情况一：调用initState会调用；
+  ·  情况二：从其他对象中依赖一些数据发生改变时
+
+- **build** ，主要是返回需要渲染的 Widget ，由于 build 会被调用多次，因此在该函数中只能做返回 Widget 相关逻辑，避免因为执行多次导致状态异常。
+- **reassemble** ，主要是提供开发阶段使用，在 debug 模式下，每次热重载都会调用该函数，因此在 debug 阶段可以在此期间增加一些 debug 代码，来检查代码问题。
+- **didUpdateWidget** ，该函数主要是在组件重新构建，比如说热重载，父组件发生 build 的情况下，子组件该方法才会被调用，其次该方法调用之后一定会再调用本组件中的 build 方法。
+- **deactivate** ，在组件被移除节点后会被调用，如果该组件被移除节点，然后未被插入到其他节点时，则会继续调用 dispose 永久移除。
+- **dispose** ，永久移除组件，并释放组件资源。
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128103245847.png" alt="image-20201128103245847" style="zoom:67%;" />
+
+
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128103118424.png" alt="image-20201128103118424" style="zoom:67%;" />
+
+整个过程分为四个阶段：
+
+- 1.初始化阶段，包括两个生命周期函数 createState 和 initState；
+- 2.组件创建阶段，也可以称组件出生阶段，包括 didChangeDependencies 和 build；
+- 3.触发组件多次 build ，这个阶段有可能是因为 didChangeDependencies、setState 或者 didUpdateWidget 而引发的组件重新 build ，在组件运行过程中会多次被触发，这也是优化过程中需要着重需要注意的点；
+- 4.最后是组件销毁阶段，deactivate 和 dispose。
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -18,6 +75,7 @@ class Hello extends StatelessWidget{
     // TODO: implement build
     // return HomeContent();
     return MaterialApp(  //MaterialApp作为根组件
+      debugShowCheckedModeBanner: false, //控制调试器是否显示右上角debug
       home:Scaffold(
         appBar: AppBar(  //顶部导航
           title: Text("Flutter demo"),
@@ -66,6 +124,34 @@ Scaffold(
 ),
 ```
 
+## appBar参数--AppBar组件
+
+顶部信息栏
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128090100878.png" alt="image-20201128090100878" style="zoom:80%;" />
+
+```dart
+AppBar(
+    centerTitle: true,  //文字是否居中
+    backgroundColor: Colors.orange,
+    leading: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {
+            print("menu");
+        }),
+    title: Text("Practice"),
+    actions: [
+        IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+                print("search");
+            })
+    ],
+),
+```
+
+
+
 ## BottomNavigationBar组件
 
 <img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201126091816286.png" alt="image-20201126091816286" style="zoom:80%;" />
@@ -112,6 +198,285 @@ class _BottomTabsState extends State<BottomTabs> {
 ## body参数
 
 内部放置组件，主要显示内容的界面
+
+
+
+
+
+
+
+
+
+
+
+
+
+## tabBar参数--TabBar组件
+
+### TabBar&DefaultTabController
+
+​	<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128092215859.png" alt="image-20201128092215859" style="zoom:67%;" />
+
+```dart
+class _TabBarStudyPageState extends State<TabBarStudyPage> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2, //顶部tab切换的数量
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("tab_bar_study"),
+          bottom: TabBar(
+            //tabs的数量和length需要一样
+            tabs: [
+              Tab(
+                text: "热门",
+              ),
+              Tab(
+                text: "推荐",
+              )
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            ListView(
+              children: [
+                ListTile(
+                  title: Text("01"),
+                  subtitle: Text("0101"),
+                )
+              ],
+            ),
+            ListView(
+              children: [
+                ListTile(
+                  title: Text("02"),
+                  subtitle: Text("0202"),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+## 在Tabs页面中使用，允许溢出滚动
+
+
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128095951017.png" alt="image-20201128095951017" style="zoom:80%;" />
+
+```dart
+class CategoryPage extends StatefulWidget {
+  CategoryPage({Key key}) : super(key: key);
+
+  @override
+  _CategoryPageState createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 7,
+        child: Scaffold(
+          appBar: AppBar(
+            //将TabBar写入title中，解决出现两个title的问题
+            title: TabBar(
+              isScrollable: true, //如果tabs长度大于机器长度，允许溢出滚动出现
+              tabs: [
+                Tab(text: "tab01",),
+                Tab(text: "tab02",),
+                Tab(text: "tab03",),
+                Tab(text: "tab04",),
+                Tab(text: "tab05",),
+                Tab(text: "tab06",),
+                Tab(text: "tab07",)
+              ],
+            ),
+          ),
+          body: TabBarView(children: [
+            Text("01"),
+            Text("02"),
+            Text("03"),
+            Text("04"),
+            Text("05"),
+            Text("06"),
+            Text("07")
+          ]),
+        ));
+  }
+}
+```
+
+
+
+
+
+
+
+### TabBarController
+
+```dart
+import 'package:flutter/material.dart';
+
+class TabControllerPage extends StatefulWidget {
+  TabControllerPage({Key key}) : super(key: key);
+
+  @override
+  _TabControllerPageState createState() => _TabControllerPageState();
+}
+
+class _TabControllerPageState extends State<TabControllerPage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+
+    //实现一些控制操作
+    _tabController.addListener(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("tabbarcontroller"),
+        bottom: TabBar(
+          //必须配置controller
+          controller: this._tabController,
+          tabs: [
+            Tab(
+              text: "01",
+            ),
+            Tab(
+              text: "02",
+            )
+          ],
+        ),
+      ),
+      body: TabBarView(
+        //必须配置controller
+        controller: this._tabController,
+        children: [
+          Center(
+            child: Text("01"),
+          ),
+          Center(
+            child: Text("02"),
+          )
+        ],
+      ),
+    );
+  }
+}
+```
+
+## drawer参数--Drawer组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128113806521.png" alt="image-20201128113806521" style="zoom:50%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128114928598.png" alt="image-20201128114928598" style="zoom:50%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128122026173.png" alt="image-20201128122026173" style="zoom:50%;" />
+
+```dart
+import 'package:flutter/material.dart';
+
+class drawerPage extends StatefulWidget {
+  var context;
+  drawerPage(this.context, {Key key}) : super(key: key);
+
+  @override
+  _drawerPageState createState() => _drawerPageState(this.context);
+}
+
+class _drawerPageState extends State<drawerPage> {
+  var context;
+  _drawerPageState(this.context);
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: [
+          // //单独使用Drawerheader组件时，其内部大小不好改变，配合其他组件使用，使之扩展
+          // DrawerHeader(
+          //   child: Text("mine"),
+          //   decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //           image: NetworkImage(
+        //"https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00458-565.jpg"))),
+
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: DrawerHeader(
+          //           child: Text("hi"),
+          //           decoration: BoxDecoration(
+          //               image: DecorationImage(
+          //             image: NetworkImage(
+          //"https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00458-565.jpg"),
+          //             fit: BoxFit.cover,
+          //           ))),
+          //     )
+          //   ],
+          // ),
+
+          //UserAccountsDrawerHeader格式比较固定
+          Row(
+            children: [
+              Expanded(
+                  child: UserAccountsDrawerHeader(
+                      onDetailsPressed: () {
+                        print("here");
+                      },
+                      accountName: Text("username"),
+                      accountEmail: Text("useremail"),
+                      currentAccountPicture: CircleAvatar(
+                        backgroundImage: NetworkImage(
+           "https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00458-565.jpg"),
+                      ),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(
+          "https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00684-1448.jpg")),
+                      ))),
+            ],
+          ),
+
+          ListTile(
+            leading: CircleAvatar(
+              child: Icon(Icons.person),
+            ),
+            title: Text("person"),
+              //添加了一个点击跳转
+            onTap: () {
+              //将context内部的组件清出，返回时，会直接返回到Tabs页面
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, "/userinfo");
+            },
+          ),
+          //横线组件,就显示一条横线
+          Divider(),
+          ListTile(
+            leading: CircleAvatar(
+              child: Icon(Icons.search),
+            ),
+            title: Text("search"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+```
+
+
 
 # container&Text组件
 
@@ -612,7 +977,7 @@ class LayOutDemo extends StatelessWidget {
 
 ## Stack-Align
 
-<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125132641023.png" alt="image-20201125132641023" style="zoom:50%;" />
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201125132641023.png" alt="image-20201125132641023" style="zoom: 33%;" />
 
 ```dart
 class LayOutDemo extends StatelessWidget {
@@ -693,6 +1058,16 @@ class LayOutDemo extends StatelessWidget {
 }
 
 ```
+
+
+
+
+
+
+
+
+
+
 
 # AspectRatio组件
 
@@ -801,8 +1176,7 @@ class LayOutDemo extends StatelessWidget {
         )
       ],
     );
-  }
-}
+  }}
 ```
 
 ## 使用map循环产生多个Card
@@ -812,7 +1186,6 @@ List listData = [
   {"iamge_url": "", "avatar_url": "", "title": "", "descripton": ""},
   {"iamge_url": "", "avatar_url": "", "title": "", "descripton": ""}
 ];
-
 class LayOutDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -844,13 +1217,8 @@ class LayOutDemo extends StatelessWidget {
         );
       }).toList(),
     );
-  }
-}
+  }}
 ```
-
-
-
-
 
 # 圆形头像组件(CircleAvatar)
 
@@ -902,7 +1270,52 @@ class LayOutDemo extends StatelessWidget {
 
 # Button组件
 
-## 初步学习
+设置按钮没有的属性时，考虑在外层套一个其他组件，比如Container组件，自适应加Extended布局即可
+
+## 按钮禁用状态
+
+```dart
+onPressed: null,
+//设置这个参数之后，按钮会变成灰色，表示禁用
+```
+
+## 带图标的按钮
+
+```dart
+RaisedButton.Icon(
+	icon: Icon(Icons.search),
+    label: Text("搜索按钮"),
+    onPressed:(){}
+)
+```
+
+## 圆形按钮，圆角按钮
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128132508057.png" alt="image-20201128132508057" style="zoom:80%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128132543263.png" alt="image-20201128132543263" style="zoom:80%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128132709719.png" alt="image-20201128132709719" style="zoom: 50%;" />
+
+```dart
+//圆角按钮
+shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(10.0)),
+
+//圆形按钮,内部内容可能会溢出，使用Container组件包起来，设置大小
+shape: CircleBorder(side: BorderSide(color: Colors.orange)),
+
+//包起来之后的效果
+Container(
+    height: 120,
+    child: RaisedButton(
+        child: Text("Button in Search"),
+        onPressed: () {},
+        //圆形按钮
+        shape: CircleBorder(side: BorderSide(color: Colors.orange)),
+    ),
+)
+```
+
+
+
+## RaisedButton组件
 
 ```dart
 class UseButton extends StatelessWidget {
@@ -915,16 +1328,61 @@ class UseButton extends StatelessWidget {
       child: Text(this.name),
       textColor: Theme.of(context).accentColor,
       onPressed: () {},
-    );
-  }
-}
-
+    );}}
 class LayOutDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UseButton("01");
-  }
-}
+  }}
+```
+
+## IconButton组件
+
+```dart
+IconButton(
+    icon: Icon(Icons.menu),
+    onPressed: () {
+        print("menu");}),
+```
+
+## ButtonBar组件
+
+```dart
+ButtonBar(
+    //对齐方式
+    alignment: MainAxisAlignment.center,
+    children: [
+        RaisedButton(
+            onPressed: () {},
+            //圆角按钮
+            child: Text("按钮1"),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),),
+        RaisedButton(
+            onPressed: () {},
+            //圆角按钮
+            child: Text("按钮2"),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+        ) ],)
+```
+
+## FloatingActionButton组件
+
+```dart
+//页面的scaffold内部设置 浮动按钮的位置
+floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+//FloatingActionButton组件
+FloatingActionButton(
+    child: Icon(
+        Icons.add,
+        size: 44,
+        color: Colors.black,
+    ),
+    onPressed: () {},
+    backgroundColor: Colors.yellow,
+)
 ```
 
 # 有状态组件(StatefulWidget)
@@ -1217,6 +1675,338 @@ Navigator.of(context).pushReplacementNamed('routeName')
                     //这参数的意思是将之前所有的route置空
                     (route) => route == null);
 ```
+
+# Divider组件
+
+```dart
+//横线组件,就显示一条横线
+Divider(),
+```
+
+# SizedBox组件
+
+```dart
+SizedBox()
+//  const SizedBox({ Key key, this.width, this.height, Widget child })
+```
+
+# Form组件
+
+## TextField组件、内部输入的内容获取
+
+```dart
+
+class Forms extends StatefulWidget {
+  Forms({Key key}) : super(key: key);
+
+  @override
+  _FormsState createState() => _FormsState();
+}
+
+class _FormsState extends State<Forms> {
+  var _username = new TextEditingController(); //给文本框赋初始值
+  var _pwd;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    this._username.text = "123";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        //输入框
+        TextField(
+          controller: _username,
+          decoration: InputDecoration(hintText: "请输入内容"),
+          onChanged: (value) {
+            setState(() {
+              this._username.text = value;
+            });
+          },
+        ),
+        //密码框
+        Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: TextField(
+            // maxLines: ,  //设置最大行数
+            obscureText: true,
+            decoration: InputDecoration(
+                hintText: "请输入密码",
+                labelText: "密码",
+                icon: Icon(Icons.access_alarm)),
+            onChanged: (value) {
+              setState(() {
+                this._pwd = value;
+              });
+            },
+          ),
+        ),
+        RaisedButton(onPressed: () {
+          print(this._username.text);
+          print(this._pwd);
+        })
+      ],
+    );
+  }
+}
+
+//这部分有时间可以看看
+//this._userTextControl = TextEditingController.fromValue(TextEditingValue(
+//    text: _userTextControl.text,
+//    selection: TextSelection.fromPosition(TextPosition(
+//        affinity: TextAffinity.downstream,
+//        offset: _userTextControl.text.length))));
+```
+
+## CheckBox & CheckboxListTile组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128155324173.png" alt="image-20201128155324173" style="zoom:67%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128155350396.png" alt="image-20201128155350396" style="zoom:67%;" />       <img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128162141713.png" alt="image-20201128162141713" style="zoom:80%;" />
+
+```dart
+Row(
+    children: [
+        Checkbox(
+            //选中之后的颜色
+            activeColor: Colors.orange,
+            value: this._checked,
+            onChanged: (value) {
+                setState(() {
+                    this._checked = value;
+                });
+            }),
+        Text(this._checked ? "选中" : "未选中")
+    ],
+),
+
+//checkbox + ListTile
+CheckboxListTile(
+    title: Text("data"),
+    subtitle: Text("01"),
+    selected: this._checked, //增加这个选项，第三张截图的效果
+    secondary: Icon(Icons.person),
+    value: this._checked,
+    onChanged: (value) {
+        setState(() {
+            this._checked = value;
+        });
+    })
+```
+
+## Radio & RadioListTile组件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128161435881.png" alt="image-20201128161435881" style="zoom: 67%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128161459278.png" alt="image-20201128161459278" style="zoom: 67%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128161908790.png" alt="image-20201128161908790" style="zoom: 67%;" />
+
+```dart
+Row(
+    children: [
+        Text("男:"),
+        Radio(
+            value: "男",
+            groupValue: this._sex,
+            onChanged: (value) {
+                setState(() {
+                    this._sex = value;
+                });
+            }),
+        SizedBox(
+            width: 20,
+        ),
+        Text("女:"),
+        Radio(
+            value: "女",
+            groupValue: this._sex,
+            onChanged: (value) {
+                setState(() {
+                    this._sex = value;
+                });
+            }),
+        SizedBox(
+            width: 50,
+        ),
+        Text(this._sex == "男" ? "男" : "女"),
+    ],
+),
+
+RadioListTile(
+    value: "男",
+    groupValue: this._sex,
+    onChanged: (value) {
+        setState(() {
+            this._sex = value;
+        });
+    },
+    title: Text("data"),
+    subtitle: Text("01"),
+    secondary: Icon(Icons.person),
+    selected: this._sex == "男", //添加这个属性选中的时候ListTile的内容也跟着变化
+),
+RadioListTile(
+    value: "女",
+    groupValue: this._sex,
+    onChanged: (value) {
+        setState(() {
+            this._sex = value;
+        });
+    },
+    title: Text("data"),
+    subtitle: Text("02"),
+    secondary: Image.network(
+        "https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00684-1448.jpg"),
+    selected: this._sex == "女",
+),
+],
+);
+}
+}
+
+```
+
+## Switch组件
+
+![image-20201128162652865](C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128162652865.png)![image-20201128162716011](C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128162716011.png)
+
+```dart
+Switch(
+    value: this._switch,
+    onChanged: (value) {
+        setState(() {
+            this._switch = value;
+        });
+    })
+```
+
+# Date组件
+
+## 使用内置datepick选择时间
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128173534342.png" alt="image-20201128173534342" style="zoom:80%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128173555107.png" alt="image-20201128173555107" style="zoom:50%;" /><img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20201128173620049.png" alt="image-20201128173620049" style="zoom:50%;" />
+
+```dart
+//使用了第三方的格式化方法，但是日期获得的方式是内部的，可以用第三方插件获得日期选择器
+class DateContent extends StatefulWidget {
+  DateContent({Key key}) : super(key: key);
+
+  @override
+  _DateContentState createState() => _DateContentState();
+}
+
+class _DateContentState extends State<DateContent> {
+  DateTime _nowDate = new DateTime.now();
+  TimeOfDay _nowTime = new TimeOfDay.now();
+  var _pickedDate;
+  var _pickedTime;
+  _datepiker() async {
+    // showDatePicker(
+    //         //Future类型，类似于Promise的异步类型，用回调函数获取值
+    //         context: context,
+    //         initialDate: this._nowDate,
+    //         //时间选择器可以选择的最早时间
+    //         firstDate: DateTime(1980),
+    //         //时间选择器可以选择的最晚时间
+    //         lastDate: DateTime(2500))
+    //     .then((value) => {print(value)});
+
+    var backDate;
+    backDate = await showDatePicker(
+        context: context,
+        initialDate: this._nowDate,
+        firstDate: DateTime(1980),
+        lastDate: DateTime(2500));
+    // print(backDate);
+    setState(() {
+      this._pickedDate = backDate;
+    });
+  }
+
+  _timepiker() async {
+    var backTime =
+        await showTimePicker(context: context, initialTime: this._nowTime);
+    setState(() {
+      this._nowTime = backTime;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var date = formatDate(
+        this._pickedDate != null ? this._pickedDate : this._nowDate,
+        [yyyy, "-", mm, "-", dd]);
+    var time = this._pickedTime == null ? this._nowTime : this._pickedTime;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        //用来给没有监听函数的组件添加事件监听
+        InkWell(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(date), Icon(Icons.arrow_drop_down)],
+          ),
+          onTap: this._datepiker,
+        ),
+        InkWell(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("${time.format(context)}"),
+              Icon(Icons.arrow_drop_down)
+            ],
+          ),
+          onTap: this._timepiker,
+        )
+      ],
+    );
+  }
+}
+
+```
+
+## 使用第三方库的datepick
+
+
+
+
+
+
+
+# 网络数据请求
+
+## http库
+
+```dart
+import 'package:http/http.dart' as http;  
+
+//请求数据
+  _getData() async {
+    var apiUrl = "http://127.0.0.1:8000/books2";
+
+    var result = await http.get(apiUrl);
+    if (result.statusCode == 200) {
+      print(result);
+      setState(() {
+        this._books = jsonDecode(result.body);
+      });
+    } else {
+      print(result.statusCode);
+    }
+  }
+
+  //POST提交数据
+  _postData() async {
+    var apiUrl = "http://127.0.0.1:8000/books2";
+    var result = await http.post(apiUrl, body: {"Json格式的数据"});
+    if (result.statusCode == 200) {
+      
+    } else {
+
+    }
+  }
+```
+
+## Dio库
 
 
 
