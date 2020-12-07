@@ -1,0 +1,13 @@
+wsgi协议
+
+```python
+综上，我们得知一个Web应用的S端由server和application构成，服务器程序server负责接受HTTP请求、解析HTTP请求、发送HTTP响应等底层套接字通信的处理，都是苦力活，如果我们自己来写这些底层代码，还没开始写应用程序逻辑application呢，就得花个把月去读HTTP规范，所以我们通常直接使用别人开发好的server程序，比如wsgiref、uwsgi、或者框架自带的等等，我们则只需要把精力放在开发应用程序逻辑application上即可。因为我们在开发application时不希望接触到诸如TCP连接、HTTP原始请求和响应格式等底层套接字通信，所以需要在server与application之间建立一套统一的规范/接口，让我们专心用Python编写Web业务。
+这个接口就是WSGI：Web Server Gateway Interface。
+详见（了解即可）：https://www.liaoxuefeng.com/wiki/897692888725344/923057027806560
+
+其实wsgiref、uwsgi等服务器程序server都是遵循wsgi协议的，有了这套协议/标准，server与application的开发就完全解开了耦合，一批程序员可以专注于开发不同的server，一批程序员(就是我们自己)则专注于开发不同的application，只要二者都遵循wsgi协议，则开发的程序可以完美整合，这跟谈恋爱是一个道理，定好你对老婆的要求/标准，只要符合这个标准的女人都可以做你的老婆，反之也一样，所以，找到单身的原因没有
+
+web框架的出现是为了让我们把精力更多地放在开发application上，有的web框架自己实现了高性能的server(比如tornado)，有的web框架需要借助别人开发的高性能server=>uwsgi(比如django)，之所以可以这么灵活，都要归功于wsgi协议
+
+在开发过程中我们也无需关系wsgi协议，web框架都会按照wsgi协议为我们定制好application的基本功能，所以我们只需要关心最上层的应用程序的开发即可，有了web框架真是省了我们不少事，下面我们就来详细介绍一下django框架吧
+```
