@@ -1,9 +1,9 @@
-# Linux 系统目录结构
+Linux 系统目录结构
 
 登录系统后，在当前命令窗口下输入命令：
 
 ```
- ls / 
+ls / 
 ```
 
 你会看到如下图所示:
@@ -50,7 +50,7 @@
   proc 是 Processes(进程) 的缩写，/proc 是一种伪文件系统（也即虚拟文件系统），存储的是当前内核运行状态的一系列特殊文件，这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。
   这个目录的内容不在硬盘上而是在内存里，我们也可以直接修改里面的某些文件，比如可以通过下面的命令来屏蔽主机的ping命令，使别人无法ping你的机器：
 
-  ```
+  ```shell
   echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all
   ```
 
@@ -182,7 +182,9 @@
 
 - **/srv**：存放服务启动后需要提取的数据**（不用服务器就是空）**
 
-# Linux 文件与目录管理
+---
+
+## Linux 文件与目录管理
 
 我们知道Linux的目录结构为树状结构，最顶级的目录为根目录 /。
 
@@ -198,9 +200,7 @@
   **相对路径：**
   路径的写法，不是由 **/** 写起，例如由 /usr/share/doc 要到 /usr/share/man 底下时，可以写成： **cd ../man** 这就是相对路径的写法。
 
-------
-
-## 处理目录的常用命令
+### 处理目录的常用命令
 
 接下来我们就来看几个常见的处理目录的命令吧：
 
@@ -215,13 +215,13 @@
 
 你可以使用 *man [命令]* 来查看各个命令的使用文档，如 ：man cp。
 
-### ls (列出目录)
+#### ls (列出目录)
 
 在Linux系统当中， ls 命令可能是最常被运行的。
 
 语法：
 
-```
+```Linux
 [root@www ~]# ls [-aAdfFhilnrRSt] 目录名称
 [root@www ~]# ls [--color={never,auto,always}] 目录名称
 [root@www ~]# ls [--full-time] 目录名称
@@ -239,7 +239,7 @@
 [root@www ~]# ls -al ~
 ```
 
-### cd (切换目录)
+#### cd (切换目录)
 
 cd是Change Directory的缩写，这是用来变换工作目录的命令。
 
@@ -265,7 +265,7 @@ cd是Change Directory的缩写，这是用来变换工作目录的命令。
 
 接下来大家多操作几次应该就可以很好的理解 cd 命令的。
 
-### pwd (显示目前所在的目录)
+#### pwd (显示目前所在的目录)
 
 pwd 是 **Print Working Directory** 的缩写，也就是显示目前所在目录的命令。
 
@@ -298,7 +298,7 @@ lrwxrwxrwx 1 root root 10 Sep  4 17:54 /var/mail -> spool/mail
 # 所以，加上 pwd -P 的选项后，会不以连结档的数据显示，而是显示正确的完整路径啊！
 ```
 
-### mkdir (创建新目录)
+#### mkdir (创建新目录)
 
 如果想要创建新的目录的话，那么就使用mkdir (make directory)吧。
 
@@ -340,7 +340,7 @@ drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
 
 如果我们使用 -m ，如上例我们给予 -m 711 来给予新的目录 drwx--x--x 的权限。
 
-### rmdir (删除空的目录)
+#### rmdir (删除空的目录)
 
 语法：
 
@@ -360,7 +360,7 @@ drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
 
 将 mkdir 实例中创建的目录(/tmp 底下)删除掉！
 
-```
+```shell
 [root@www tmp]# ls -l   <==看看有多少目录存在？
 drwxr-xr-x  3 root  root 4096 Jul 18 12:50 test
 drwxr-xr-x  3 root  root 4096 Jul 18 12:53 test1
@@ -377,7 +377,7 @@ drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
 
 不过要注意的是，这个 rmdir 仅能删除空的目录，你可以使用 rm 命令来删除非空目录。
 
-### cp (复制文件或目录)
+#### cp (复制文件或目录)
 
 cp 即拷贝文件和目录。
 
@@ -408,7 +408,7 @@ cp 即拷贝文件和目录。
 cp: overwrite `/tmp/bashrc'? n  <==n不覆盖，y为覆盖
 ```
 
-### rm (移除文件或目录)
+#### rm (移除文件或目录)
 
 语法：
 
@@ -432,7 +432,7 @@ rm: remove regular file `bashrc'? y
 
 如果加上 -i 的选项就会主动询问喔，避免你删除到错误的档名！
 
-### mv (移动文件与目录，或修改名称)
+#### mv (移动文件与目录，或修改名称)
 
 语法：
 
@@ -464,9 +464,7 @@ rm: remove regular file `bashrc'? y
 [root@www tmp]# mv mvtest mvtest2
 ```
 
-------
-
-## Linux 文件内容查看
+### Linux 文件内容查看
 
 Linux系统中使用以下命令来查看文件的内容：
 
@@ -480,7 +478,7 @@ Linux系统中使用以下命令来查看文件的内容：
 
 你可以使用 *man [命令]*来查看各个命令的使用文档，如 ：man cp。
 
-### cat
+#### cat
 
 由第一行开始显示文件内容
 
@@ -507,7 +505,7 @@ CentOS release 6.4 (Final)
 Kernel \r on an \m
 ```
 
-### tac
+#### tac
 
 tac与cat命令刚好相反，文件内容从最后一行开始显示，可以看出 tac 是 cat 的倒着写！如：
 
@@ -518,7 +516,7 @@ Kernel \r on an \m
 CentOS release 6.4 (Final)
 ```
 
-### nl
+#### nl
 
 显示行号
 
@@ -547,7 +545,7 @@ nl [-bnw] 文件
      2  Kernel \r on an \m
 ```
 
-### more
+#### more
 
 一页一页翻动
 
@@ -571,7 +569,7 @@ nl [-bnw] 文件
 - q       ：代表立刻离开 more ，不再显示该文件内容。
 - b 或 [ctrl]-b ：代表往回翻页，不过这动作只对文件有用，对管线无用。
 
-### less
+#### less
 
 一页一页翻动，以下实例输出/etc/man.config文件的内容：
 
@@ -597,7 +595,7 @@ less运行时可以输入的命令有：
 - N     ：反向的重复前一个搜寻 (与 / 或 ? 有关！)
 - q     ：离开 less 这个程序；
 
-### head
+#### head
 
 取出文件前面几行
 
@@ -621,7 +619,7 @@ head [-n number] 文件
 [root@www ~]# head -n 20 /etc/man.config
 ```
 
-### tail
+#### tail
 
 取出文件后面几行
 
@@ -642,7 +640,27 @@ tail [-n number] 文件
 [root@www ~]# tail -n 20 /etc/man.config
 ```
 
-# Linux vi/vim
+### 软连接（连接类型l）
+
+命令：``ln -s 原文件 链接路径``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201123902413.png" alt="image-20211201123902413" style="zoom:80%;" />
+
+==软连接记录的只是文件的绝对路径，失去原文件不可用==
+
+### 硬链接
+
+==硬链接不依赖于原文件，失去原文件依旧可以，但是不可以对目录做硬链接==
+
+==只能在同一个分区做硬链接==
+
+
+
+
+
+---
+
+## Linux vi/vim
 
 所有的 Unix Like 系统都会内建 vi 文书编辑器，其他的文书编辑器则不一定会存在。
 
@@ -650,11 +668,7 @@ tail [-n number] 文件
 
 vim 具有程序编辑的能力，可以主动的以字体颜色辨别语法的正确性，方便程序设计。
 
-相关文章：[史上最全Vim快捷键键位图 — 入门到进阶](https://www.runoob.com/w3cnote/all-vim-cheatsheat.html)
-
-------
-
-## 什么是 vim？
+### 什么是 vim？
 
 Vim是从 vi 发展出来的一个文本编辑器。代码补完、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用。
 
@@ -668,11 +682,11 @@ vim 键盘图：
 
 ------
 
-## vi/vim 的使用
+### vi/vim 的使用
 
 基本上 vi/vim 共分为三种模式，分别是**命令模式（Command mode）**，**输入模式（Insert mode）**和**底线命令模式（Last line mode）**。 这三种模式的作用分别是：
 
-### 命令模式
+#### 命令模式
 
 用户刚刚启动 vi/vim，便进入了命令模式。
 
@@ -688,7 +702,7 @@ vim 键盘图：
 
 命令模式只有一些最基本的命令，因此仍要依靠底线命令模式输入更多命令。
 
-### 输入模式
+#### 输入模式
 
 在命令模式下按下i就进入了输入模式。
 
@@ -704,7 +718,7 @@ vim 键盘图：
 - **Insert**，切换光标为输入/替换模式，光标将变成竖线/下划线
 - **ESC**，退出输入模式，切换到命令模式
 
-### 底线命令模式
+#### 底线命令模式
 
 在命令模式下按下:（英文冒号）就进入了底线命令模式。
 
@@ -719,13 +733,13 @@ vim 键盘图：
 
 简单的说，我们可以将这三个模式想成底下的图标来表示：
 
-![img](https://www.runoob.com/wp-content/uploads/2014/07/vim-vi-workmodel.png)
+<img src="https://www.runoob.com/wp-content/uploads/2014/07/vim-vi-workmodel.png" alt="img" style="zoom:50%;" />
 
 ------
 
-## vi/vim 使用实例
+### vi/vim 使用实例
 
-### 使用 vi/vim 进入一般模式
+#### 使用 vi/vim 进入一般模式
 
 如果你想要使用 vi 来建立一个名为 runoob.txt 的文件时，你可以这样做：
 
@@ -735,9 +749,9 @@ $ vim runoob.txt
 
 直接输入 **vi 文件名** 就能够进入 vi 的一般模式了。请注意，记得 vi 后面一定要加文件名，不管该文件存在与否！
 
-![img](https://www.runoob.com/wp-content/uploads/2014/07/078207F0-B204-4464-AAEF-982F45EDDAE9.jpg)
+<img src="https://www.runoob.com/wp-content/uploads/2014/07/078207F0-B204-4464-AAEF-982F45EDDAE9.jpg" alt="img" style="zoom: 33%;" />
 
-### 按下 i 进入输入模式(也称为编辑模式)
+#### 按下 i 进入输入模式(也称为编辑模式)
 
 在一般模式之中，只要按下 i, o, a 等字符就可以进入输入模式了！
 
@@ -745,27 +759,27 @@ $ vim runoob.txt
 
 这个时候，键盘上除了 **Esc** 这个按键之外，其他的按键都可以视作为一般的输入按钮了，所以你可以进行任何的编辑。
 
-![img](https://www.runoob.com/wp-content/uploads/2014/07/1C928383-471E-4AF1-A61E-9E2CCBD5A913.jpg)
+<img src="https://www.runoob.com/wp-content/uploads/2014/07/1C928383-471E-4AF1-A61E-9E2CCBD5A913.jpg" alt="img" style="zoom:33%;" />
 
-### 按下 ESC 按钮回到一般模式
+#### 按下 ESC 按钮回到一般模式
 
 好了，假设我已经按照上面的样式给他编辑完毕了，那么应该要如何退出呢？是的！没错！就是给他按下 **Esc** 这个按钮即可！马上你就会发现画面左下角的 – INSERT – 不见了！
 
-### 在一般模式中按下 **:wq** 储存后离开 vi
+#### 在一般模式中按下 **:wq** 储存后离开 vi
 
 OK，我们要存档了，存盘并离开的指令很简单，输入 **:wq** 即可保存离开！
 
-![img](https://www.runoob.com/wp-content/uploads/2014/07/B2FB5146-327C-4019-AC96-DD7A8EE7460C.jpg)
+<img src="https://www.runoob.com/wp-content/uploads/2014/07/B2FB5146-327C-4019-AC96-DD7A8EE7460C.jpg" alt="img" style="zoom:33%;" />
 
 OK! 这样我们就成功创建了一个 runoob.txt 的文件。
 
 ------
 
-## vi/vim 按键说明
+### vi/vim 按键说明
 
 除了上面简易范例的 i, Esc, :wq 之外，其实 vim 还有非常多的按键可以使用。
 
-### 第一部分：一般模式可用的光标移动、复制粘贴、搜索替换等
+#### 第一部分：一般模式可用的光标移动、复制粘贴、搜索替换等
 
 | 移动光标的方法                                               |                                                              |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
@@ -822,7 +836,7 @@ OK! 这样我们就成功创建了一个 runoob.txt 的文件。
 | 这个 u 与 [Ctrl]+r 是很常用的指令！一个是复原，另一个则是重做一次～ 利用这两个功能按键，你的编辑，嘿嘿！很快乐的啦！ |                                                              |
 | .                                                            | 不要怀疑！这就是小数点！意思是重复前一个动作的意思。 如果你想要重复删除、重复贴上等等动作，按下小数点『.』就好了！ (常用) |
 
-### 第二部分：一般模式切换到编辑模式的可用的按钮说明
+#### 第二部分：一般模式切换到编辑模式的可用的按钮说明
 
 | 进入输入或取代的编辑模式                                     |                                                              |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
@@ -833,7 +847,7 @@ OK! 这样我们就成功创建了一个 runoob.txt 的文件。
 | 上面这些按键中，在 vi 画面的左下角处会出现『--INSERT--』或『--REPLACE--』的字样。 由名称就知道该动作了吧！！特别注意的是，我们上面也提过了，你想要在档案里面输入字符时， 一定要在左下角处看到 INSERT 或 REPLACE 才能输入喔！ |                                                              |
 | [Esc]                                                        | 退出编辑模式，回到一般模式中(常用)                           |
 
-### 第三部分：一般模式切换到指令行模式的可用的按钮说明
+#### 第三部分：一般模式切换到指令行模式的可用的按钮说明
 
 | 指令行的储存、离开等指令                                     |                                                              |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
@@ -858,7 +872,7 @@ OK! 这样我们就成功创建了一个 runoob.txt 的文件。
 
 举例来说，要删除 50 行，则是用 『50dd』 ，数字加在动作之前，向下移动 20 行呢？那就是『20j』或者是『20↓』
 
-## 批量操作
+#### 批量操作
 
 批量注释：
 
@@ -906,7 +920,1512 @@ OK! 这样我们就成功创建了一个 runoob.txt 的文件。
 :10,20s/#//g
 ```
 
-# 命令大全
+---
+
+## Linux用户管理
+
+### 三个主要文件
+
+Linux 系统中用户信息存放在 /etc/passwd 文件中
+
+这是一个包含每个用户基本信息的文本文件。当我们在系统中创建一个用户，新用户的详细信息就会被添加到这个文件中
+
+#### /etc/passwd内容解释
+
+``root:x:0:0:root:/root:/bin/bash``
+
+##### 用户名、密码
+
+已创建用户的用户名，字符长度 1 个到 12 个字符，“x”代表==加密密码==保存在 ``/etc/shadow 文件``中
+
+##### UID(身份证号)
+
+代表用户的 ID 号，每个用户都要有一个唯一的 ID 
+
+UID 号为 0 的是为 root 用户保留的
+
+UID 号 1 到 99 是为系统用户保留的
+
+UID 号 100-999 是为系统账户和群组保留的
+
+##### GID（身份组号）
+
+代表群组的 ID 号，每个群组都要有一个唯一的 GID 
+
+保存在`` /etc/group文件``中
+
+##### root（身份描述）
+
+描述用户的信息
+
+##### 此用户登陆系统时所在的家目录
+
+##### 登录shell（命令解释器）
+
+#### /etc/shadow内容解释
+
+``root:$6$P4ITD/Pl/o9.8tmm$kTTL7t0IIDoJ4X5spyDlgAsg17UAuPaD1MhKAScCjkkwGYH9mSbAGa37LgdE1qPPokPaZmg3b49jajhjT6FUS1::0:99999:7:::``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211129102818225.png" alt="image-20211129102818225" style="zoom:67%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211129103659809.png" alt="image-20211129103659809" style="zoom:67%;" />
+
+#### /etc/group
+
+``root:x:0:``
+
+组名、组密码、组ID、组成员
+
+### 添加用户
+
+```
+useradd 选项 用户名
+```
+
+参数说明：
+
+- 选项:
+
+  - -c comment 指定一段注释性描述
+  - -d 目录 指定用户主目录，如果此目录不存在，则同时使用-m选项，可以创建主目录
+  - -g 用户组 指定用户所属的用户组
+  - -G 用户组，用户组 指定用户所属的附加组
+  - -s Shell文件 指定用户的登录Shell
+  - -u 用户号 指定用户的用户号，如果同时有-o选项，则可以重复使用其他用户的标识号
+
+- 用户名:
+
+  指定新账号的登录名
+
+实例1：
+
+```
+# useradd –d /home/sam -m sam
+```
+
+此命令创建了一个用户sam，其中-d和-m选项用来为登录名sam产生一个主目录 /home/sam
+
+（/home为默认的用户主目录所在的父目录）
+
+实例2：
+
+```
+# useradd -s /bin/sh -g group –G adm,root gem
+```
+
+此命令新建了一个用户gem
+
+该用户的登录Shell是 `/bin/sh`
+
+它属于group用户组，同时又属于adm和root用户组，其中group用户组是其主组
+
+这里可能新建组：`#groupadd group及groupadd adm`
+
+增加用户账号就是在/etc/passwd文件中为新用户增加一条记录，同时更新其他系统文件如/etc/shadow, /etc/group等
+
+Linux提供了集成的==系统管理工具userconf==，它可以用来对用户账号进行统一管理
+
+### 删除用户
+
+如果一个用户的账号不再使用，可以从系统中删除。删除用户账号就是要将/etc/passwd等系统文件中的该用户记录删除，必要时还删除用户的主目录
+
+删除一个已有的用户账号使用`userdel`命令，其格式如下：
+
+```
+userdel 选项 用户名
+```
+
+常用的选项是 **-r**，它的作用是把用户的主目录一起删除
+
+例如：
+
+```
+# userdel -r sam
+```
+
+此命令删除用户sam在系统文件中（主要是/etc/passwd, /etc/shadow, /etc/group等）的记录，同时删除用户的主目录
+
+### 修改帐号相关信息
+
+修改用户账号就是根据实际情况更改用户的有关属性，如用户号、主目录、用户组、登录Shell等
+
+修改已有用户的信息使用`usermod`命令，其格式如下：
+
+```
+usermod 选项 用户名
+```
+
+常用的选项包括`-c, -d, -m, -g, -G, -s, -u以及-o等`，这些选项的意义与`useradd`命令中的选项一样，可以为用户指定新的资源值
+
+另外，有些系统可以使用选项：-l 新用户名
+
+这个选项指定一个新的账号，即将原来的用户名改为新的用户名
+
+例如：
+
+```
+# usermod -s /bin/ksh -d /home/z –g developer sam
+```
+
+此命令将用户sam的登录Shell修改为ksh，主目录改为/home/z，用户组改为developer。
+
+### 用户密码的管理
+
+用户管理的一项重要内容是用户密码的管理。用户账号刚创建时没有密码，但是被系统锁定，无法使用，必须为其指定密码后才可以使用，即使是指定空密码。
+
+指定和修改用户密码的Shell命令是`passwd`。超级用户可以为自己和其他用户指定密码，普通用户只能用它修改自己的密码。命令的格式为：
+
+```
+passwd 选项 用户名
+```
+
+可使用的选项：
+
+- -l 锁定密码，即禁用账号
+- -u 密码解锁
+- -d 使账号无密码
+- -f 强迫用户下次登录时修改密码
+
+如果默认用户名，则修改当前用户的密码
+
+例如，假设当前用户是sam，则下面的命令修改该用户自己的密码：
+
+```
+$ passwd 
+Old password:****** 
+New password:******* 
+Re-enter new password:*******
+```
+
+如果是超级用户，可以用下列形式指定任何用户的密码：
+
+```
+# passwd sam 
+New password:******* 
+Re-enter new password:*******
+```
+
+普通用户修改自己的密码时，passwd命令会先询问原密码，验证后再要求用户输入两遍新密码，如果两次输入的密码一致，则将这个密码指定给用户；而超级用户为用户指定密码时，就不需要知道原密码
+
+为了系统安全起见，用户应该选择比较复杂的密码，例如最好使用8位长的密码，密码中包含有大写、小写字母和数字，并且应该与姓名、生日等不相同
+
+为用户指定空密码时，执行下列形式的命令：
+
+```
+# passwd -d sam
+```
+
+此命令将用户 sam 的密码删除，这样用户 sam 下一次登录时，系统就不再允许该用户登录了
+
+passwd 命令还可以用 -l(lock) 选项锁定某一用户，使其不能登录，例如：
+
+```
+# passwd -l sam
+```
+
+### 添加批量用户
+
+添加和删除用户对每位Linux系统管理员都是轻而易举的事，比较棘手的是如果要添加几十个、上百个甚至上千个用户时，我们不太可能还使用useradd一个一个地添加，必然要找一种简便的创建大量用户的方法。Linux系统提供了创建大量用户的工具，可以让您立即创建大量用户，方法如下：
+
+#### （1）先编辑一个文本用户文件。
+
+每一列按照`/etc/passwd`密码文件的格式书写，要注意每个用户的用户名、UID、宿主目录都不可以相同，其中密码栏可以留做空白或输入x号。一个范例文件user.txt内容如下：
+
+```
+user001::600:100:user:/home/user001:/bin/bash
+user002::601:100:user:/home/user002:/bin/bash
+user003::602:100:user:/home/user003:/bin/bash
+user004::603:100:user:/home/user004:/bin/bash
+user005::604:100:user:/home/user005:/bin/bash
+user006::605:100:user:/home/user006:/bin/bash
+```
+
+#### （2）以root身份执行命令 `/usr/sbin/newusers`，从刚创建的用户文件`user.txt`中导入数据，创建用户：
+
+```
+# newusers < user.txt
+```
+
+然后可以执行命令 `vipw` 或 `vi /etc/passwd` 检查 `/etc/passwd` 文件是否已经出现这些用户的数据，并且用户的宿主目录是否已经创建
+
+#### （3）执行命令/usr/sbin/pwunconv。
+
+将 `/etc/shadow` 产生的 `shadow` 密码解码，然后回写到 `/etc/passwd` 中，并将`/etc/shadow`的`shadow`密码栏删掉。这是为了方便下一步的密码转换工作，即先取消 `shadow password` 功能
+
+```
+# pwunconv
+```
+
+#### （4）编辑每个用户的密码对照文件。
+
+格式为：
+
+```
+用户名:密码
+```
+
+实例文件 `passwd.txt` 内容如下：
+
+```
+user001:123456
+user002:123456
+user003:123456
+user004:123456
+user005:123456
+user006:123456
+```
+
+#### （5）以 root 身份执行命令 `/usr/sbin/chpasswd`。
+
+创建用户密码，`chpasswd` 会将经过 `/usr/bin/passwd` 命令编码过的密码写入 `/etc/passwd` 的密码栏
+
+```
+# chpasswd < passwd.txt
+```
+
+#### （6）确定密码经编码写入/etc/passwd的密码栏后。
+
+执行命令 `/usr/sbin/pwconv` 将密码编码为 `shadow password`，并将结果写入 `/etc/shadow`
+
+```
+# pwconv
+```
+
+---
+
+## Linux用户组管理
+
+每个用户都有一个用户组，系统可以对一个用户组中的所有用户进行集中管理。
+
+==基本组==：不同Linux 系统对用户组的规定有所不同，如``Linux下的用户属于与它同名的用户组``,这个用户组在创建用户时同时创建
+
+用户组的管理涉及用户组的添加、删除和修改
+
+组的增加、删除和修改实际上就是对/etc/group文件的更新
+
+### 增加用户组
+
+```
+groupadd 选项 用户组
+```
+
+可以使用的选项有：
+
+- -g GID 指定新用户组的组标识号（GID）
+- -o 一般与-g选项同时使用，表示新用户组的GID可以与系统已有用户组的GID相同
+
+实例1：
+
+```
+# groupadd group1
+```
+
+此命令向系统中增加了一个新组group1，新组的组标识号是在当前已有的最大组标识号的基础上加1
+
+实例2：
+
+```
+# groupadd -g 101 group2
+```
+
+此命令向系统中增加了一个新组group2，同时指定新组的组标识号是101
+
+### 删除已有的用户组
+
+```
+groupdel 用户组
+```
+
+例如：
+
+```
+# groupdel group1
+```
+
+此命令从系统中删除组group1
+
+### 修改用户组的属性
+
+```
+groupmod 选项 用户组
+```
+
+常用的选项有：
+
+- -g GID 为用户组指定新的组标识号
+- -o 与-g选项同时使用，用户组的新GID可以与系统已有用户组的GID相同
+- -n新用户组 将用户组的名字改为新名字
+
+实例1
+
+```
+# groupmod -g 102 group2
+```
+
+此命令将组group2的组标识号修改为102
+
+实例2
+
+```
+# groupmod –g 10000 -n group3 group2
+```
+
+此命令将组group2的标识号改为10000，组名修改为group3
+
+### 用户组之间切换
+
+用户可以在登录后，使用命令newgrp切换到其他用户组，这个命令的参数就是目的用户组。例如：
+
+```
+$ newgrp root
+```
+
+这条命令将当前用户切换到root用户组，前提条件是root用户组确实是该用户的主组或附加组。类似于用户账号的管理，用户组的管理也可以通过集成的系统管理工具来完成
+
+---
+
+## Linux用户切换
+
+一般用户切换是为了获得权限，有两种方式
+
+### 永久提权
+
+高级用户往下不用输密码，反之需要
+
+此时身份和root完全相同（就是登陆了root）且只要不关机，不退出，一直有效
+
+```shell
+su - root
+su 用户名
+```
+
+### 暂时提权
+
+只有部分高级指令可以使用,指令权限怎么分配的呢？
+
+#### 授权（root授权）
+
+``/etc/sudoers``
+
+在这个文件中修改相关信息
+
+### 使用
+
+```shell 
+sudo useradd 用户名
+```
+
+---
+
+## Linux用户权限
+
+### 权限对象
+
+| u      | 属主         |
+| ------ | ------------ |
+| g      | 属组         |
+| o      | 其他人       |
+| 所有人 | a(u + g + o) |
+
+### 权限类型
+
+| 读   | r    | 4    |
+| ---- | ---- | ---- |
+| 写   | w    | 2    |
+| 执行 | x    | 1    |
+
+### 文件ll详细展示信息
+
+```shell
+-       rw-    r--  r--.   1    root  root  35     Nov 29 09:00  a.txt
+文件类型 属主权限 属组 其他人 链接数  属主  属组  文件大小 创建时间       文件名
+```
+
+### 基本权限UGO
+
+#### 设置权限
+
+有两种形式，字母和数字是对应的关系
+
+``chmod命令``
+
+- -R	对文件夹下所有文件进行权限修改，否则只是文件夹权限修改
+
+##### 使用字母
+
+``chmod 选项 对象(u/g/o)赋值符(+/-/=)权限类型（r/w/x） 目标文件、目录``
+
+```shell
+chmod u+r 1.txt
+chmod u-r 1.txt
+chmod u=wr 1.txt
+```
+
+##### 使用数字
+
+``chmod 选项 数字 目标文件、目录``
+
+```shell
+chmod 760 1.txt
+chmod 710 1.txt
+chmod 777 1.txt
+```
+
+#### 更改属主、属组
+
+``chown命令``
+
+- -R对文件夹下所有文件进行权限修改，否则只是文件夹权限修改
+
+``chown 用户名.用户组 文件路径``
+
+```shell
+chown 用户名 文件路径		# 仅改变属主
+chown .用户组 文件路径		# 仅改变属组
+chgrp 用户组 文件路径		# 仅改变属组
+```
+
+==使用的文件及文件目录最好使用绝对路径，以防止出错==
+
+### 基本权限ACL
+
+Access control list  限制用户对文件访问
+
+ACL是UGO的补充，或者可以说是加强版
+
+#### 查看文件ACL
+
+命令``getfacl``获取文件acl
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211129161212386.png" alt="image-20211129161212386" style="zoom:80%;" />
+
+#### 设置ACL
+
+命令``setfacl``设置文件acl
+
+- -m	设置对象权限
+- -x      删除对象权限acl信息
+- -d      设置为默认权限
+- -b      擦除所有acl权限
+
+``setfacl -m 对象：对象名：权限  文件路径``
+
+``setfacl -x 对象：对象名  文件路径``
+
+==设置facl之后，ll查看文件权限的时候，权限那边会出现一个+号，表达了是acl的权限补充==
+
+### 特殊权限
+
+如果一个文件很重要，添加i权限让它不会被任何用户删除
+
+#### 特殊位
+
+#### suid
+
+当一个设置了SUID 位的可执行文件被执行时，该文件将以所有者的身份运行，也就是说无论谁来执行这个文件，他都有文件所有者的特权。如果所有者是 root 的话，那么执行人就有超级用户的特权了。这时该位将变成一个安全漏洞，因此不要轻易设置该位。
+
+#### sgid
+
+当一个设置了SGID 位的可执行文件运行时，该文件将具有所属组的特权，任意存取整个组所能使用的系统资源。
+若一个目录设置了SGID，则所有被复制到这个目录下的文件， 其所属的组都会被重设为和这个目录一样，除非在复制文件时加上-p （preserve，保留文件属性）的参数，才能保留原来所属的群组设置。一般来说，SGID多用在特定的多人团队的项目开发上，在系统中用得较少。
+
+#### sticky-bit
+
+对一个文件设置了sticky-bit之后，尽管其他用户有写权限，也必须由属主执行删除、移动等操作。sticky-bit位要求操作系统既是在可执行程序退出后，仍要在内存中保留该程序的映象。这样做是为了节省大型程序的启动时间,但是会占用系统资源。因此设置该位，不如把程序写好。
+
+| SUID | SGID | sticky | 二进制 | 八进制 | 说明             |
+| ---- | ---- | ------ | ------ | ------ | ---------------- |
+| -    | -    | -      | 000    | 0      | 不设置特殊权限   |
+| -    | -    | t      | 001    | 1      | 只设置stiky      |
+| -    | s    | 0      | 010    | 2      | 只设置sgid       |
+| s    | -    | -      | 100    | 4      | 只设置suid       |
+| -    | s    | t      | 011    | 3      | 设置sgid和stiky  |
+| s    | -    | t      | 101    | 5      | 设置suid和stiiky |
+| s    | s    | -      | 110    | 6      | 设置suid和sgid   |
+| s    | s    | t      | 111    | 7      | 三者都设置       |
+
+### 文件属性
+
+``  chattr [ -RVf ] [ -v version ] [ mode ] files...``
+
+chattr 改变一个Linux文件系统上的文件属性
+
+通用格式是：+-=[aAcCdDeijsStTu]
+
+| a    | 只能附加数据                                                 |
+| ---- | ------------------------------------------------------------ |
+| A    | 不修改访问时间                                               |
+| c    | 自动压缩文件                                                 |
+| C    | 不执行写入时复制（COW）                                      |
+| d    | 不能使用dump命令备份文件                                     |
+| D    | 更改同步保存                                                 |
+| e    | extent格式（一种文件系统格式)                                |
+| i    | 不能修改。不能删除或重命名，不能创建到该文件的链接，也不能向该文件写入数据。<br />只有超级用户或拥有 CAP_LINUX_IMMUTABLE 能力的进程才能设置或清除此属性 |
+| j    | 数据日志                                                     |
+| s    | 安全删除                                                     |
+| S    | 同步更新                                                     |
+| t    |                                                              |
+| T    |                                                              |
+| u    | 文件被删除时，其内容会被保存，后面可以请求恢复               |
+
+
+
+下面的只读属性，可以使用 lsattr列出，但不能被 chattr 修改：
+
+- E：压缩错误
+- h：巨大的文件
+- I：索引目录
+- N：内联数据
+- X：压缩原始访问
+- Z：压缩文件是脏的
+
+并不是所有文件系统都支持所有标志；参考文件系统手册了解如btrfs(5), ext4(5), 和 xfs(5)文件格式的更多详情
+
+### umask
+
+默认为0022
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211129175152556.png" alt="image-20211129175152556" style="zoom: 50%;" />
+
+
+
+---
+
+## Linux进程管理
+
+### 虚拟文件系统--/porc/
+
+### 进程的生命周期
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130085558435.png" alt="image-20211130085558435" style="zoom: 50%;" />
+
+父进程复制自己的地址空间==（fork）==创建一个新的进程
+
+每个新进程分配一个唯一的进程ID（PID），满足后续查找跟踪，任何进程都可以创建子进程，所有进程都是第一个系统进程的后代
+
+Centos5/6系统进程为init
+Centos7系统进程为systemd
+
+### 进程相关信息ps
+
+| USER    | 用户                                       |
+| ------- | ------------------------------------------ |
+| PID     | 进程号                                     |
+| %CPU    | CPU占用率                                  |
+| %MEM    | 内存占用率                                 |
+| VSZ     | 虚拟内存占用                               |
+| RSS     | 使用的物理内存情况                         |
+| TTY     | 使用的终端(多个终端同时访问时可以见到效果) |
+| STAT    | 进程状态                                   |
+| START   | 启动时间                                   |
+| TIME    | 占用CPU时间                                |
+| COMMAND | 进程执行的命令行                           |
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130090703672.png" alt="image-20211130090703672" style="zoom: 60%;" />
+
+
+
+### 静态查看进程ps
+
+``命令ps``
+
+- -a                        显示当前终端的所有进程信息
+- -u                        以用户的格式显示进程的信息
+- -x                        显示后台进程运行的参数
+
+#### 常用
+
+``ps aux``
+
+``ps aux --sort %cpu``     ``ps aux --sort -%cpu(-为降序)``
+
+``ps axo 自定义的显示字段 ``自选择出现的字段（自定义显示列）
+
+### 动态查看进程top
+
+``命令top``
+
+- -d  控制刷新时间 `` top -d 3(每隔三秒刷新一次，默认为1)``
+- -p  查看某一个进程 ``top -p 进程号，进程号（查询某几个程序的情况）``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130095728572.png" alt="image-20211130095728572" style="zoom: 67%;" />
+
+上方是系统性能，下方是进程状态
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130100038489.png" alt="image-20211130100038489" style="zoom: 50%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130100056426.png" alt="image-20211130100056426" style="zoom:67%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130100144156.png" alt="image-20211130100144156" style="zoom:67%;" />
+
+
+
+在top指令生效的情况下，使用如下指令
+
+| M    | 按内存使用排序       |
+| ---- | -------------------- |
+| P    | 安CPU使用排序        |
+| N    | 按PID大小排序        |
+| h\|? | 帮助                 |
+| <    | 向前                 |
+| >    | 向后                 |
+| z    | 彩色（使用数字调整） |
+
+### 信号控制进程Kill
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130101720925.png" alt="image-20211130101720925" style="zoom: 80%;" />
+
+| 信号    | 编号 | 含义                      |
+| ------- | ---- | ------------------------- |
+| SIGHUP  | 1    | 重新加载配置              |
+| SIGHNT  | 2    | 键盘终端ctr+c             |
+| SIGQUIT | 3    | 键盘退出ctrl+\            |
+| SIGKILL | 9    | 强制终止，无条件          |
+| SIGTERM | 15   | 正常终止，缺省信号,会保存 |
+| SIGCONT | 18   | 继续                      |
+| SIGSTOP | 19   | 暂停                      |
+| SIGTSTP | 20   | 键盘暂停ctrl+Z            |
+
+使用方式：``kill -信号编号 进程号``
+
+### 进程优先级
+
+查看、调整程序优先级，高优先级程序可以获得更多系统资源
+
+#### 优先范围和特性
+
+``nice优先级NI``及其范围为-20~19共40个级别
+
+但是nice优先级并不是系统优先级
+
+系统优先级为``PR``，在实际的进程优先级会将NI优先级==+20之后==给纳入PR优先级
+
+==优先级级别越低，优先级越高==
+
+#### 查看进程优先级
+
+``ps axo pid,command,nice --sort=-nice | head -5``
+
+#### 更改NI优先级
+
+默认情况下，启动进程时，会继承父进程的优先级
+
+##### 启动时调整
+
+命令: ``nice -n （+/-）（数字） 运行的程序命令 ``
+
+##### 已有调整
+
+命令：先查询PID
+
+``renice (+/-)(数字) 程序PID``
+
+### 作业控制fg&bg
+
+#### foreground(fg)
+
+前台程序，在终端中运行的程序
+
+##### 把后台程序放入前台
+
+命令`` fg 程序序号``
+
+#### background(bg)
+
+没有控制终端，不需要终端的交互，用户看不到，但是仍在运行
+
+##### 将程序放入后台
+
+``sleep 3 &``将sleep 3 这个程序放入后台，==&符==表示将程序放入后台运行
+
+##### 查看在后台的进程
+
+命令：``jobs``
+
+##### 删除在后台的进程
+
+``kill 进程号``
+
+``kill %进程jobs内的序号``，注意其内的==%==
+
+---
+
+## Linux管道符和重定向
+
+```< 、<< 、 > 、>> 、|```
+
+重定向"< 、>"
+
+### FD（0~255）
+
+文件句柄，文件描述符，file description，进程使用文件时使用FD描述和管理相关文件
+其实就是将路径和数字做关联，在使用时，无需时常考虑路径。类似于数字超链接
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130112228638.png" alt="image-20211130112228638" style="zoom:80%;" />
+
+### 输出重定向
+
+### 输入重定向
+
+### 管道
+
+#### piping
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130123804030.png" alt="image-20211130123804030" style="zoom:67%;" />
+
+#### tee(扩展)
+
+使piping管道变成T字形管道，分流
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211130134602477.png" alt="image-20211130134602477" style="zoom:80%;" />
+
+命令：``cat /etc/passwd | tee file | tail -1``
+
+### 参数传递
+
+部分命令对``|符``不敏感，例如cp，rm等
+
+使用xargs进行传递
+
+例如：``cat delfile.txt | xargs rm -rfv``
+
+---
+
+## Linux磁盘管理
+
+### 命名方式
+
+SATA--/dev/sda，/dev/sdb
+
+| /dev | 设备文件目录                         |
+| ---- | ------------------------------------ |
+| sda  | 文件                                 |
+| s    | sata                                 |
+| d    | disk                                 |
+| a    | 第一块硬盘（后续跟着字母表顺序扩展） |
+
+### 新硬盘
+
+分区（MBR/GPT）---->格式化/文件系统Filesystem----->挂载mount
+
+### 查看磁盘信息
+
+命令：``lsblk``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201083413176.png" alt="image-20211201083413176" style="zoom:80%;" />
+
+命令：``ls /dev/sd*``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201083452846.png" alt="image-20211201083452846" style="zoom:80%;" />
+
+命令：``fdisk -l 目标磁盘文件``
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201085300670.png" alt="image-20211201085300670" style="zoom:80%;" />
+
+命令：``df``
+
+- -h    人性化显示单位
+- -T    显示文件系统类型
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201091024329.png" alt="image-20211201091024329" style="zoom:80%;" />
+
+### 普通文件分区
+
+#### 创建分区
+
+##### 启动分区工具
+
+命令：``fdisk 目标硬盘（非系统盘）``例：``fdisk /dev/sdb``
+
+##### fdisk内使用命令
+
+#### 刷新分区表
+
+命令：``partprobe 目标磁盘文件``
+
+#### 创建文件系统（格式化）
+
+命令：``mkfs.ext4 目标磁盘文件分区``例：``mkfs.ext4 /dev/sdb1``
+make file system extend
+
+#### 挂载
+
+创建挂载点（文件夹），一个分区一个挂载点，挂载点位置无所谓
+
+命令：``mount -t 磁盘文件类型(ext4) 挂载目标磁盘分区文件 目标文件夹``
+
+#### 卸载
+
+命令：``unmount 分区挂载文件夹``
+
+### 交换分区管理Swap
+
+类似windows的虚拟内存，防止内存溢出OOM（Out of memory）
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201100253557.png" alt="image-20211201100253557" style="zoom: 50%;" />
+
+#### 分区准备
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201100935573.png" alt="image-20211201100935573" style="zoom: 67%;" />
+
+其中第二部的类型设置现在由于系统改进，已经有默认值了，所以不需要改，但是保险起见还是改一下。
+
+#### 格式化
+
+命令：``mkswap 目标磁盘分区文件``
+
+#### 挂载
+
+命令：``swapon 目标磁盘分区文件``
+
+#### 卸载
+
+命令：``swapoff 目标磁盘分区文件``
+
+#### 查看
+
+命令：``free``
+
+### 逻辑卷LVM
+
+可以随意扩张大小，性能与普通磁盘无异，==只要卷组有空间，逻辑卷大小可以一直扩大==
+
+``PV(Physic volume)	物理卷
+VG(Volume Group)	卷组
+LV(Logical Volume)	逻辑卷``
+
+#### 准备物理磁盘
+
+#### 创建PV
+
+命令：``pvcreate 目标磁盘文件``
+
+#### 创建VG
+
+命令：``vgcreate 卷组名 目标磁盘文件``
+
+#### 创建LV
+
+命令：``lvcteate -L 逻辑卷大小 -n 逻辑卷名字 卷组名 ``
+
+- -L    逻辑卷大小
+- -n    逻辑卷名字
+- 卷组名代表从哪个卷组中分配存储空间
+
+#### 格式化
+
+命令：``mkfs -t ext4 /dev/卷组名/逻辑卷名``
+
+#### 挂载
+
+创建文件夹之后，将文件夹挂载
+
+命令：``mount /dev/卷组名/逻辑卷名 目标文件夹``
+
+#### 卸载
+
+unmount...
+
+#### 卷组扩容
+
+命令：
+
+``1.pvceate 新添加的目标磁盘文件``
+
+``2.vgextend 扩充的卷组 添加入卷组的目标磁盘文件``
+
+#### 逻辑卷扩容
+
+LV扩容命令：``lvextend -L +2G /dev/卷组/逻辑卷``
+
+扩容完逻辑卷之后需要对挂载的文件夹刷新一下
+
+FS扩容命令：``resize2fs /dev/卷组/逻辑卷``
+
+#### 查看相关信息
+
+pvs    查看物理卷信息
+
+vgs	查看卷组信息
+
+lvs	查看逻辑卷信息
+
+### 文件系统
+
+windows：FAT16	FAT32	NTF
+
+Linux：Ext3	Ext4	XFS
+
+Ext4:
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201121544446.png" alt="image-20211201121544446" style="zoom:67%;" />
+
+### RAID阵列
+
+#### 创建RAID
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201134208107.png" alt="image-20211201134208107" style="zoom:80%;" />
+
+#### 格式化、挂载
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201134338417.png" alt="image-20211201134338417" style="zoom:80%;" />
+
+#### 查看RAID信息
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201134424107.png" alt="image-20211201134424107" style="zoom:80%;" />
+
+#### 坏盘移除
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201134459059.png" alt="image-20211201134459059" style="zoom:80%;" />
+
+---
+
+## Linux文件查找及压缩
+
+### 命令查找
+
+命令：``which	命令查找`` 例：``which ls``
+
+### 文件查找
+
+命令：
+
+``1.find	针对文件名``
+
+find [path...] [options] [expression] [action]
+
+在某路径下找什么，怎么找，描述是啥
+
+- -name	区分大小写的文件名
+
+- -iname    不区大小写的文件名
+- -size 大小
+  - -size 5M    文件等与5M的文件
+  - -size +5M    文件大于5M的文件
+  - -size -5M    文件小于5M的文件
+- -maxdepth 目录深度
+- -user  属主名（按文件属主查找）
+- -group 属组名（按文件属组查找）
+- -type 文件类型（按文件类型查找）
+  - l, b, d, -
+
+- -perm 权限数字 -ls
+
+``	find 查找目录 -name 文件名 -ok cp -rfv {} 目标目录 \;``
+
+- -ok代表后续接命令
+- {}代表查找到的文件
+
+``find 查找目录 -name 文件名 -delete``
+
+- 找到之后删除文件
+
+``2.locate	针对数据库``例：
+
+### 文件压缩解压
+
+#### 打包
+
+命令：``tar -f 打包的包名 打包的文件、文件夹``
+
+- -c	create
+- -f    file
+
+#### 压缩
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201145819738.png" alt="image-20211201145819738" style="zoom:67%;" />
+
+#### 解压缩
+
+命令：``tar -xf 包文件``
+
+- -C解压重定向（解压文件放到另外一个文件夹中）例：``tar -xf 包文件 目标绝对路径``
+
+## Linux软件管理
+
+### RPM包
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201152456012.png" alt="image-20211201152456012" style="zoom:67%;" />
+
+### 源码包
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201153015313.png" alt="image-20211201153015313" style="zoom: 80%;" />
+
+
+
+### YUM
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201162323254.png" alt="image-20211201162323254" style="zoom:80%;" />
+
+#### 本地yum源配置
+
+- ##### 观察repo文件
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211201164017983.png" alt="image-20211201164017983" style="zoom: 80%;" />
+
+- ##### 备份--移除官方yum库
+
+  ``mv /etc/yum.repo.d/* /tmp``
+
+- ##### 编写本地YUM库配置文件
+
+```shell
+vim /etc/yum.repo.d/dvd.repo
+
+[dvd]
+name=dvd
+baseurl=file:///mnt/cdrom
+gpgcheck=0
+```
+
+- ##### 挂载安装光盘
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202090206801.png" alt="image-20211202090206801" style="zoom:80%;" />
+
+写到文件中，开机加载
+
+#### 使用YUM管理程序
+
+##### 查看
+
+命令：``yum list``
+
+##### 安装
+
+命令：``yum install -y 软件报名``
+
+- -y	自动yes
+
+命令：``yum reinstall -y  软件报名``重新安装
+
+##### 升级
+
+命令：``yum -y update 包名``
+
+##### 卸载
+
+命令：``yum -y remove 包名``
+
+### RPM
+
+rpm安装，==无法自动安装依赖==，可能导致无法使用
+
+#### 查看
+
+命令：``rpm -q 包名``
+
+#### 安装
+
+命令：``rpm -ivh 包名``
+
+使用包名的==全称，包括后缀==
+
+#### 卸载
+
+命令：``rpm -evh 包名``
+
+卸载软件，使用软件名，==么有后缀==
+
+### 源码安装
+
+- #### 准备编译工具
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202094249408.png" alt="image-20211202094249408" style="zoom:80%;" />
+
+- #### 解压及进入源码路径
+
+​		``tar xvf  压缩文件名``
+
+- #### 配置(``./configure``)
+
+​		指定属组、属主、安装路径（``--prefix=绝对路径``）
+
+- #### 编译
+
+​		``make``
+
+- #### 安装
+
+​		``make install``
+
+## Linux任务计划
+
+在未来某个时间点，计划一个任务运行
+
+### 查看计划任务
+
+命令：`atq`
+
+### 一次性调度执行``at``
+
+schedule one-time tasks with at
+
+命令：``at <timespace>``
+
+```shell
+at now +5min														# 从现在开始数5分钟
+at teatime tomorrow (teatime is 16:00)
+at noon +4days													#
+at 4:00 2022-01-01											# 具体时间点开始
+```
+
+例：
+
+```shell
+at now +1min
+at > useradd lsm
+at > (任务命令结束时，ctrl + D，退出)
+```
+
+### 循环调度任务``cron``
+
+schedule resuring jobs with cron
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202104205861.png" alt="image-20211202104205861" style="zoom:80%;" />
+
+内部会开放一个crond进程，进行命令的循环
+
+查看此进程：<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202104529569.png" alt="image-20211202104529569" style="zoom:80%;" />
+
+==计划任务的存储文件夹是 /var/spool/cron==
+
+命令：crontab
+
+- -e    为当前用户编辑计划任务
+- -l    列出当前用户的计划任务
+- -u username     管理员可以管理其他用户的计划任务
+- -r    删除当前用户的计划任务
+
+```shell
+# crontab -e
+   *      *       *      *            *command
+   分     时      日      月           周
+（0~59）（0~23）（1~31）（1~12）（0~6，sunday=0 or 7）
+
+5 1 15 3 * command   # 每年3月15日1点5分执行command
+5 1 15 * * command   # 每年每月15号1点5分执行command
+5 1 * * * command    # 每年每月每日1点5分执行command
+5 1 1,2,3 * * command # 每年每月的1，2，3号的1点5分执行command
+5 1 5-9 * * command  # 每年每月的5号~9号的1点5分执行command
+0 * * * * command    # 每个小时整点执行command
+```
+
+==当月或日和周同时存在时，是∪关系，即多个条件同时生效==
+
+## Linux日志管理
+
+### 系统日志rsyslog
+
+系统日志管理，什么程序，产生了什么日志，放到了什么地方
+
+系统操作有关的信息，如登录信息，程序启动和关闭信息，error信息
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202114957281.png" alt="image-20211202114957281" style="zoom:80%;" />
+
+==d for daemon，守护进程==
+
+### 应用程序日志
+
+按着每个应用程序自己的方式产生、记录日志
+
+常见的程序日志：
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202115218129.png" alt="image-20211202115218129" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202122310826.png" alt="image-20211202122310826" style="zoom:80%;" />
+
+### rsyslog配置
+
+命令：``rpm -qc rsyslog``列出与rsyslog相关的配置文件
+
+- c是config的意思
+- <img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202122912112.png" alt="image-20211202122912112" style="zoom: 50%;" />
+- <img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202140511893.png" alt="image-20211202140511893" style="zoom:80%;" />
+- 
+
+```shell
+# Use default timestamp format
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+# File syncing capability is disabled by default. This feature is usually not required,
+# not useful and an extreme performance hit
+#$ActionFileEnableSync on
+
+# Include all config files in /etc/rsyslog.d/
+$IncludeConfig /etc/rsyslog.d/*.conf
+
+# Turn off message reception via local log socket;
+# local messages are retrieved through imjournal now.
+$OmitLocalLogging on
+
+# File to store the position in the journal
+$IMJournalStateFile imjournal.state
+
+
+#### RULES ####
+
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+
+# Log all the mail messages in one place.
+mail.*                                                  -/var/log/maillog
+illog
+
+# Log cron stuff
+cron.*                                                  /var/log/cron
+
+# Everybody gets emergency messages
+*.emerg                                                 :omusrmsg:*
+
+# Save news errors of level crit and higher in a special file.
+uucp,news.crit                                          /var/log/spooler
+
+# Save boot messages also to boot.log
+local7.*                                                /var/log/boot.log
+
+```
+
+==其中的；代表并列==
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202142741234.png" alt="image-20211202142741234" style="zoom: 80%;" />
+
+
+
+#### facility类型
+
+facility在Linux中是对一类程序的说明
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202141654426.png" alt="image-20211202141654426" style="zoom:80%;" />
+
+#### 日志级别
+
+从高到低排序
+
+==*代表所有级别==
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202141852719.png" alt="image-20211202141852719" style="zoom:80%;" />
+
+#### 存放地址
+
+==文件路径前有一个``-``，代表异步进行==
+
+可修改，修改完需要重启服务或者重启计算机
+
+### 日志轮转logrotate
+
+对日志信息进行处理，以节省磁盘空间，抛弃无效数据
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202145933064.png" alt="image-20211202145933064" style="zoom: 50%;" />
+
+#### logrotate配置规则
+
+##### 主配置文件
+
+```shell
+# see "man logrotate" for details
+# rotate log files weekly
+weekly
+# keep 4 weeks worth of backlogs
+rotate 4
+# create new (empty) log files after rotating old ones
+create
+# use date as a suffix of the rotated file
+dateext
+# uncomment this if you want your log files compressed
+#compress
+# RPM packages drop log rotation information into this directory
+include /etc/logrotate.d
+# no packages own wtmp and btmp -- we'll rotate them here
+/var/log/wtmp {
+    monthly									# 轮转周期
+    create 0664 root utmp		# 轮转后创建新文件、并设置权限为0664  属主 属组
+		minsize 1M							# 最小达到1M才进行轮转
+    rotate 1								# 保留一份
+}
+/var/log/btmp {
+    missingok								# 丢失不提示 missing is ok 文件不重要
+    monthly
+    create 0600 root utmp
+    rotate 1
+}
+
+```
+
+| weekly                | 轮转周期，一周一轮转                                         |
+| --------------------- | ------------------------------------------------------------ |
+| rotate4               | 轮转保留4份                                                  |
+| create 0600 root utmp | 轮转后创建新文件  文件权限  文件属主  文件数组               |
+| dateext               | 使用日期作为后缀                                             |
+| compress              | 是否压缩                                                     |
+| include 文件夹        | 包含该目录下的配置文件（还有一些其他配置在别的地方，这个地方在哪呢？） |
+| notifempty            | 空文件不进行论转                                             |
+| minsize               | 最小进行轮转的文件大小                                       |
+| missingok             | 丢失不提示，文件不重要                                       |
+| maxsize               | 文件最大达到多大，达到最大即刻轮转                           |
+
+轮转配置分全局配置和单文件配置，全局配置是默认，单文件是实际，==如果单文件没有要求，则看全局文件==。
+
+==轮转配置主要有两大维度，时间及大小，是否是达到时间进行切割，还是达到大小进行切割。如果两个唯独同时设置，则需要同时满足两个条件，为“与”关系==
+
+---
+
+## Linux网络管理
+
+### 更改主机名
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211202164812889.png" alt="image-20211202164812889" style="zoom:80%;" />
+
+
+
+## Linux文件服务
+
+### ftp Server
+
+File Transfer protocol 是TCP/IP协议组中的协议之一
+
+提供文件共享服务
+
+软件包为==vsftp==
+
+| /var/ftp           | 分发的文件路径 |
+| ------------------ | -------------- |
+| ftp://服务器IP地址 | 访问路径       |
+
+#### 文件上传
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206100336098.png" alt="image-20211206100336098" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206100405032.png" alt="image-20211206100405032" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206100440044.png" alt="image-20211206100440044" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206100544323.png" alt="image-20211206100544323" style="zoom:80%;" />
+
+### NFS
+
+Network File System，网络文件系统，NFS的客户端主要为Linux，支持多节点同时挂载并发写入
+
+将一个服务器作为存储专用服务器，集中存储文件
+
+其它网站服务器等从存储服务器内部查询文件
+
+#### 安装NFS服务器--存储端
+
+##### 安装nfs服务
+
+命令：``yum -y install nfs-utils``
+
+##### 在本地创建一个文件夹作为共享文件夹
+
+##### 配置nfs服务
+
+在``文件/etc/exports``文件中写入：``本地共享文件夹  共享网段``
+
+##### 启动服务，开机自启动
+
+命令：``systemctl start nfs-server``	``systemctl enable nfs-server``
+
+例：
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206102033387.png" alt="image-20211206102033387" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206102327602.png" alt="image-20211206102327602" style="zoom:80%;" />
+
+==/webdata	是发布资源的目录==
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206102718215.png" alt="image-20211206102718215" style="zoom:80%;" />
+
+==export -v检查输出的文件夹==
+
+ <img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206102627493.png" alt="image-20211206102627493" style="zoom:80%;" />
+
+#### 安装NFS服务--WEB服务器
+
+##### 安装nfs服务
+
+命令：``yum -y install nfs-utils`` httpd
+
+httpd是用来测试的
+
+##### 启动及开机自启动
+
+##### 显示挂载情况
+
+命令：``shoemount -e 目标nfs存储服务器``
+
+##### 挂载
+
+命令：``mount -t nfs 目标nfs存储服务器:存储服务器内的共享文件夹 本地挂载文件夹``
+
+##### 查看挂载
+
+命令：``df``
+
+例：
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206103008083.png" alt="image-20211206103008083" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206103422921.png" alt="image-20211206103422921" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206103643118.png" alt="image-20211206103643118" style="zoom:80%;" />
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206103717021.png" alt="image-20211206103717021" style="zoom:80%;" />
+
+### ssh
+
+安装-->启动及自启动
+
+<img src="C:\Users\ghdyx\AppData\Roaming\Typora\typora-user-images\image-20211206105638030.png" alt="image-20211206105638030" style="zoom:80%;" />
+
+## Linux防火墙
+
+### firewall
+
+保护互联网对服务器的影响
+
+systemctl stop firewalld			停止
+
+systemctl disable firewalld		禁止开机自启动
+
+systemctl status firewalld		查看程序状态
+
+### selinux
+
+保护服务器内部程序对内部文件的访问
+
+centos7以后的程序只能访问其内部文件，对于其他文件都不准访问
+
+##### 状态查看
+
+getenforce
+
+- enforcing	开启
+- permissive 放行
+- disable        关闭
+
+##### 临时关闭
+
+命令：``setenforce 0``
+
+##### 永久关闭（修改配置文件）
+
+文件：==/etc/selinux/config==
+
+将SELINUX改为disable
+
+---
+
+---
+
+## 命令大全
 
 ### 1、ls命令
 
@@ -1472,11 +2991,13 @@ find pathname -options [-print -exec -ok ...]
 
 命令参数：
 
-```
+```shell
 pathname: find命令所查找的目录路径。例如用.来表示当前目录，用/来表示系统根目录。
 -print： find命令将匹配的文件输出到标准输出。
--exec： find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为'command' {  } \;，注意{   }和\；之间的空格。
--ok： 和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。
+-exec： find命令对匹配的文件执行该参数所给出的shell命令。
+				相应命令的形式为'command' {  } \;，注意{   }和\；之间的空格。
+-ok： 和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令
+			在执行每一个命令之前，都会给出提示，让用户来确定是否执行。
 ```
 
 **命令选项：**
@@ -2329,6 +3850,7 @@ free -t
 
 （3）周期性查询内存使用情况
 
-```
+```shell
 free -s 10
 ```
+
